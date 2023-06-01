@@ -97,4 +97,8 @@ public class Empresa {
             System.out.println("Tem apenas " + count + " " + produto.getNome() + " no seu carrinho.");
         }
     }
+    
+    public void visualizarCarrinho(){
+        System.out.println(carrinho);
+    }
 }
