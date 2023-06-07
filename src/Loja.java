@@ -1,8 +1,7 @@
-package Application;
+package Entities;
 
-import Entities.Eletronicos;
+import Entities.empresa.*;
 import Entities.Empresa;
-import Entities.Produto;
 
 import java.util.Locale;
 import java.util.Scanner;
@@ -16,10 +15,10 @@ public class Loja {
         //Criando a loja
         Empresa empresa = new Empresa("Amazon");
         //Criando produtos de teste
-        Produto mouse = new Eletronicos("Mouse gamer", "Mouse para jogos", "Corsair", "Cinza", "Gamer", 49.99,  2020);
-        Produto carregadorIphone = new Eletronicos("Carregador de Iphone", "Carregador homologado Apple", "Apple", "Branco", "Carregador", 89.99,  2022);
-        Produto samsungA10 = new Eletronicos("Celular Samsung A10", "Celular ótimo custo benefício", "Samsung", "Preto", "Celulares", 1200.00,  2019);
-        Produto notebook = new Eletronicos("Notebook Acer Aspire II", "Notebook para dia a dia", "Acer", "Prata", "Notebook", 3999.99,  2019);
+        Produto mouse = new Eletronicos("Mouse gamer", "Mouse para jogos", "Corsair", "Cinza", "Gamer", 49.99,0, 123,  2020);
+        Produto carregadorIphone = new Eletronicos("Carregador de Iphone", "Carregador homologado Apple", "Apple", "Branco", "Carregador", 89.99, 0, 456,  2022);
+        Produto samsungA10 = new Eletronicos("Celular Samsung A10", "Celular ótimo custo benefício", "Samsung", "Preto", "Celulares", 1200.00, 0, 789,  2019);
+        Produto notebook = new Eletronicos("Notebook Acer Aspire II", "Notebook para dia a dia", "Acer", "Prata", "Notebook", 3999.99, 0, 43210,  2019);
 
         empresa.addProdutoEstoque(mouse, 4);
 //        empresa.addProdutoEstoque(carregadorIphone, 2);

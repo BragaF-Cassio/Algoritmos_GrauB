@@ -3,6 +3,8 @@ package Entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import Entities.empresa.*;
+
 public class Empresa {
     private String nomeEmpresa;
     private List<Produto> carrinho = new ArrayList<>();
@@ -34,6 +36,25 @@ public class Empresa {
             estoque.add(produto);
         }
         System.out.println(estoque);
+    }
+
+    public void addProdutoEstoque(Produto produto, int quantidade, boolean adicionarAoEstoqueCasoNaoExista) {
+        //Procura no estoque o produto do parâmetro
+        for (Produto p: estoque) {
+            //Se achou o produto, modifica o estoque e sai da função
+            if(p.getCodigo() == produto.getCodigo()){
+                p.adicionaQuantidade(quantidade);
+                return;
+            }
+        }
+
+        //Se não encontrou o produto no estoque, e a flag de adição está habilitada, adiciona ao estoque
+        if(adicionarAoEstoqueCasoNaoExista){
+            System.out.println("Novo produto cadastrado ao estoque!");
+            System.out.println(produto);
+            produto.setQuantidade(quantidade);
+            estoque.add(produto);
+        }
     }
 
     public void removerProdutoEstoque(Produto produto, int quantidade) {
