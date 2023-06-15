@@ -5,7 +5,7 @@ package trabalho;
 	public class Eletrodomestico extends Produto{
 		private String eficienciaEnergetica;
 
-		public Eletrodomestico(String nome, String descricao, String marca, String cor, String categoria, double valor, int quantidade, int anoDeLancamento, String eficienciaEnergetica, long codigo) {
+		public Eletrodomestico(String nome, String descricao, String marca, String cor, String categoria, double valor, int quantidade, String eficienciaEnergetica, long codigo) {
 			super(nome, descricao, marca, cor, categoria, valor, quantidade, codigo);
 			this.eficienciaEnergetica = eficienciaEnergetica;
 		}
