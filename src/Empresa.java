@@ -1,13 +1,12 @@
-package Entities;
+package Trabalho;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import Entities.empresa.*;
-
+import org.apache.commons.lang.SerializationUtils;
 public class Empresa {
     private String nomeEmpresa;
-    private List<Produto> carrinho = new ArrayList<>();
+    private List<Item> carrinho = new ArrayList<>();
     private List<Produto> estoque = new ArrayList<>();
 
     public Empresa(String nomeEmpresa) {
@@ -31,33 +30,47 @@ public class Empresa {
                 '}';
     }
 
-    public void addProdutoEstoque(Produto produto, int quantidade){
+    /*public void addProdutoEstoque(Produto produto, int quantidade){
         for (int i=0; i<quantidade; i++){
             estoque.add(produto);
         }
+        System.out.println("Novo item adicionado ao estoque:");
         System.out.println(estoque);
+        System.out.println();
+    }*/
+
+    public boolean addProdutoEstoque(Produto produto, int quantidade) {
+        return addProdutoEstoque(produto, quantidade, true);
     }
 
-    public void addProdutoEstoque(Produto produto, int quantidade, boolean adicionarAoEstoqueCasoNaoExista) {
+    public boolean addProdutoEstoque(Produto produto, int quantidade, boolean adicionarAoEstoqueCasoNaoExista) {
         //Procura no estoque o produto do parâmetro
         for (Produto p: estoque) {
             //Se achou o produto, modifica o estoque e sai da função
             if(p.getCodigo() == produto.getCodigo()){
+                System.out.println("Adicionando estoque de item já cadastrado...");
                 p.adicionaQuantidade(quantidade);
-                return;
+                System.out.println(p);
+                return true;
             }
         }
 
         //Se não encontrou o produto no estoque, e a flag de adição está habilitada, adiciona ao estoque
         if(adicionarAoEstoqueCasoNaoExista){
             System.out.println("Novo produto cadastrado ao estoque!");
-            System.out.println(produto);
             produto.setQuantidade(quantidade);
+            System.out.println(produto);
             estoque.add(produto);
+            return true;
+        } else {
+            System.out.println("Não foi possível adicionar o item " + produto.toString());
+            System.out.println("Item não está cadastrado ao estoque.");
+            System.out.println();
+            return false;
         }
     }
 
-    public void removerProdutoEstoque(Produto produto, int quantidade) {
+    /*public void removerProdutoEstoque(Produto produto, int quantidade) {
         int count = 0; // Contador para verificar o número de ocorrências do produto no estoque
 
         // Verifica a quantidade de ocorrências do produto no estoque
@@ -76,34 +89,74 @@ public class Empresa {
             //da pra tipo, se o cara tentar tirar mais produtos do que tem ali no carrinho, so pegar e zerar aquele produto no estoque dele, ou exibir alguma msg, isso é detalhe, a gente pensa
             System.out.println("Tem apenas " + count + " " + produto.getNome() + " no estoque.");
         }
+    }*/
+
+    public int removerProdutoEstoque(Produto produto, int quantidade) {
+        // Encontra produto no estoque e remove caso
+        for (Produto p : estoque) {
+            if (p.equals(produto)) {
+                if(p.getQuantidade() > quantidade){
+                    p.removeQuantidade(quantidade);
+                    return 0;
+                } else {
+                    estoque.remove(p);
+                    return 1;
+                }
+            }
+        }
+
+        return -1;
     }
-    public void addProdutoCarrinho(Produto produto, int quantidade) {
+
+    //Função que adiciona a quantidade de produtos ao carrinho, se houver a quantidade no estoque
+    //Retorna true se adicionou com sucesso, senão retorna false
+    public boolean addProdutoCarrinho(Produto produto, int quantidade) {
         int count = 0; // Contador para verificar o número de ocorrências do produto no estoque
 
         // Verifica a quantidade de ocorrências do produto no estoque
         for (Produto p : estoque) {
             if (p.equals(produto)) {
-                count++;
-            }
-        }
+                if (p.getQuantidade() >= quantidade){
 
-        // Verifica se a quantidade no estoque é maior ou igual à quantidade desejada
-        if (count >= quantidade) {
-            for (int i = 0; i < quantidade; i++) {
-                carrinho.add(produto);
+                    //Checa se o item já não está no carrinho, se estiver, adiciona mais itens
+                    boolean estaNoCarrinho = false;
+                    for (Item it: carrinho) {
+                        if(it.getProduto().equals(produto)){
+                            estaNoCarrinho = true;
+                            if (it.getQuantidade() + quantidade <= produto.getQuantidade()){
+                                it.adicionaQuantidade(quantidade);
+                                break;
+                            } else {
+                                System.out.println("Quantidade insuficiente no estoque! Item já está no carrinho.");
+                                return false;
+                            }
+                        }
+                    }
+
+                    if (estaNoCarrinho == false) {
+                        carrinho.add(new Item(p, quantidade));
+                    }
+
+                    //Mostra informações do carrinho após adicionar ao estoque carrinho
+                    visualizarCarrinho();
+                    return true;
+                } else {
+                    System.out.println("Quantidade insuficiente no estoque!");
+                    return false;
+                }
+
             }
-            System.out.println(carrinho);
-        } else {
-            System.out.println("Quantidade insuficiente no estoque.");
         }
+        return false;
     }
 
-    public void removerProdutoCarrinho(Produto produto, int quantidade){
+
+    /*public void removerProdutoCarrinho(Produto produto, int quantidade){
         int count = 0; // Contador para verificar o número de ocorrências do produto no carrinho (para nao ser possivel ter 2 mouses no carrinho e querer tirar 3
 
         // Verifica a quantidade de ocorrências do produto no carrinho
-        for (Produto p : carrinho) {
-            if (p.equals(produto)) {
+        for (Item it : carrinho) {
+            if (it.getProduto().equals(produto)) {
                 count++;
             }
         }
@@ -117,9 +170,185 @@ public class Empresa {
             //da pra tipo, se o cara tentar tirar mais produtos do que tem ali no carrinho, so pegar e zerar aquele produto no carrinho dele, ou exibir alguma msg, isso é detalhe, a gente pensa
             System.out.println("Tem apenas " + count + " " + produto.getNome() + " no seu carrinho.");
         }
+    }*/
+
+    public int removeProdutoCarrinho(Produto produto, int quantidade){
+        // Encontra produto no estoque e remove caso
+        for (Item p : carrinho) {
+            if (p.getProduto().equals(produto)) {
+                if(p.getQuantidade() > quantidade){
+                    p.removeQuantidade(quantidade);
+                    return 0;
+                } else {
+                    System.out.println("Item removido do carrinho!");
+                    carrinho.remove(p);
+                    return 1;
+                }
+            }
+        }
+
+        return -1;
     }
-    
-    public void visualizarCarrinho(){
-        System.out.println(carrinho);
+
+    public String visualizarCarrinho(){
+        if(!carrinho.isEmpty()) {
+            System.out.println("Carrinho do cliente:");
+            //System.out.println(carrinho);
+            for (Item p: carrinho){
+                System.out.println(p.toString());
+            }
+            System.out.println();
+            return carrinho.toString();
+        } else {
+            System.out.println("Carrinho vazio!");
+            System.out.println();
+            return "Vazio";
+        }
     }
+
+    public ArrayList<Produto> listarItensCarrinho(){
+        ArrayList<Produto> tmpCarrinho = new ArrayList<>();
+        int quantItems = 0;
+
+        for (Item p: carrinho){
+            tmpCarrinho.add(p.getProduto());
+            quantItems++;
+            System.out.println(quantItems + ") " + tmpCarrinho.get(tmpCarrinho.size()-1).toString());
+        }
+
+        if (quantItems > 0){
+            return tmpCarrinho;
+        } else {
+            return null;
+        }
+    }
+
+    public ArrayList<Produto> listarEletronicosEstoque(){
+        ArrayList<Produto> tmpEstoque = new ArrayList<>();
+        int quantItems = 0;
+
+        for (Produto p: estoque){
+            if(p instanceof Eletronicos){
+                tmpEstoque.add(p);
+                quantItems++;
+                System.out.println(quantItems + ") " + tmpEstoque.get(tmpEstoque.size()-1).toString());
+            }
+        }
+
+        if (quantItems > 0){
+            return tmpEstoque;
+        } else {
+            return null;
+        }
+    }
+
+    public ArrayList<Produto> listarEletrodomesticosEstoque(){
+        ArrayList<Produto> tmpEstoque = new ArrayList<>();
+        int quantItems = 0;
+
+        for (Produto p: estoque){
+            if(p instanceof Eletrodomestico){
+                tmpEstoque.add(p);
+                quantItems++;
+                System.out.println(quantItems + ") " + tmpEstoque.get(tmpEstoque.size()-1).toString());
+            }
+        }
+
+        if (quantItems > 0){
+            return tmpEstoque;
+        } else {
+            return null;
+        }
+    }
+
+    public ArrayList<Produto> listarLivrosEstoque(){
+        ArrayList<Produto> tmpEstoque = new ArrayList<>();
+        int quantItems = 0;
+
+        for (Produto p: estoque){
+            if(p instanceof Livros){
+                tmpEstoque.add(p);
+                quantItems++;
+                System.out.println(quantItems + ") " + tmpEstoque.get(tmpEstoque.size()-1).toString());
+            }
+        }
+
+        if (quantItems > 0){
+            return tmpEstoque;
+        } else {
+            return null;
+        }
+    }
+
+    public ArrayList<Produto> listarRoupasEstoque(){
+        ArrayList<Produto> tmpEstoque = new ArrayList<>();
+        int quantItems = 0;
+
+        for (Produto p: estoque){
+            if(p instanceof Roupas){
+                tmpEstoque.add(p);
+                quantItems++;
+                System.out.println(quantItems + ") " + tmpEstoque.get(tmpEstoque.size()-1).toString());
+            }
+        }
+
+        if (quantItems > 0){
+            return tmpEstoque;
+        } else {
+            return null;
+        }
+    }
+
+    public String visualizarEstoque(){
+        if (!estoque.isEmpty()) {
+            System.out.println("Estoque da loja:");
+            //System.out.println(estoque);
+            for (Produto p: estoque){
+                System.out.println(p.toString());
+            }
+            System.out.println();
+            return estoque.toString();
+        } else {
+            System.out.println("Estoque vazio!");
+            System.out.println();
+            return "Vazio";
+        }
+    }
+
+    public double checkoutCarrinho(){
+        double valorGasto = 0;
+
+        for (Item it: carrinho){
+            if(it.getProduto().getQuantidade() >= it.getQuantidade()){
+                it.getProduto().removeQuantidade(it.getQuantidade());
+                valorGasto += it.getProduto().getValor()*it.getQuantidade();
+            }
+        }
+
+        System.out.println("Checkout realizado!");
+        System.out.println("Valor gasto na compra: " + String.format("R$%.2f", valorGasto));
+        System.out.println();
+        carrinho.clear();
+        return valorGasto;
+    }
+
+    public double finalizarCompra(){
+        double valorGasto;
+
+        valorGasto = checkoutCarrinho();
+        visualizarCarrinho();
+        visualizarEstoque();
+        return valorGasto;
+    }
+
+    public Produto retornaProdutoDoEstoqueComCodigo(long codigo) {
+        for (Produto p: estoque) {
+            if (p.getCodigo() == codigo){
+                return p;
+            }
+        }
+
+       return null;
+    };
+
 }

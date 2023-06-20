@@ -1,7 +1,17 @@
+package Trabalho;
 public abstract class Produto {
     protected String nome, descricao, marca, cor, categoria;
     protected double valor;
     protected int quantidade;
+    protected long codigo;
+
+    public long getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(long codigo) {
+        this.codigo = codigo;
+    }
 
     public String getNome() {
         return nome;
@@ -59,14 +69,26 @@ public abstract class Produto {
         this.quantidade = quantidade;
     }
 
-    public Produto(String nome, String descricao, double valor, int quantidade) {
+    public void adicionaQuantidade(int quantidade) {
+        this.quantidade += quantidade;
+    }
+
+    public void removeQuantidade(int quantidade) {
+        this.quantidade -= quantidade;
+    }
+
+    public Produto(String nome, String descricao, double valor, int quantidade, long codigo) {
         this.nome = nome;
         this.descricao = descricao;
         this.valor = valor;
         this.quantidade = quantidade;
+        this.codigo = codigo;
+        this.marca = "Nenhuma";
+        this.cor = "Nenhuma";
+        this.categoria = "Nenhuma";
     }
 
-    public Produto(String nome, String descricao, String marca, String cor, String categoria, double valor, int quantidade) {
+    public Produto(String nome, String descricao, String marca, String cor, String categoria, double valor, int quantidade, long codigo) {
         this.nome = nome;
         this.descricao = descricao;
         this.marca = marca;
@@ -74,6 +96,11 @@ public abstract class Produto {
         this.categoria = categoria;
         this.valor = valor;
         this.quantidade = quantidade;
+        this.codigo = codigo;
+    }
+
+    public Produto(Produto outro){
+        this.quantidade = outro.quantidade;
     }
 
     @Override
