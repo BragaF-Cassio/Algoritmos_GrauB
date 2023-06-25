@@ -1,273 +1,379 @@
-import Trabalho.*;
-import org.junit.Assert;
-import org.junit.Test;
+package Trabalho;
 
-public class EmpresaTest {
-    //testes do método addProdutoEstoque
-    @Test
-    public void testAddProdutoEstoqueSeNaoExisteNoEstoque(){
-        //aqui, vamos testar o método addProdutoEstoque
-        //em um cenário onde deve adicionar o produto no estoque se o mesmo ainda não existir
-        Empresa empresa = new Empresa("Amazon");
-        Produto mouse = new Eletronicos("Mouse gamer", "Mouse para jogos", "Corsair", "Cinza", "Gamer", 49.99,2, 123,  2020);
-        empresa.addProdutoEstoque(mouse, 3, true);
-        String resultadoEsperado = "[Eletronicos{anoDeLancamento=2020, nome='Mouse gamer', descricao='Mouse para jogos', marca='Corsair', cor='Cinza', categoria='Gamer', valor=49.99, quantidade=3}]";
-        String resultado = empresa.visualizarEstoque();
-        Assert.assertEquals(resultadoEsperado, resultado);
+
+//import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+//import org.apache.commons.lang.SerializationUtils;
+public class Empresa {
+    private String nomeEmpresa;
+    private List<Item> carrinho = new ArrayList<>();
+    private List<Produto> estoque = new ArrayList<>();
+
+    public Empresa(String nomeEmpresa) {
+        this.nomeEmpresa = nomeEmpresa;
     }
 
-    @Test
-    public void testAddProdutoSeJaExisteNoEstoque(){
-        //aqui, vamos testar o método addProdutoEstoque em um cenário onde adiciona mais quantidades, se o produto já existe no estoque
-        Empresa empresa = new Empresa("Amazon");
-        Produto mouse = new Eletronicos("Mouse gamer", "Mouse para jogos", "Corsair", "Cinza", "Gamer", 49.99,2, 123,  2020);
-        empresa.addProdutoEstoque(mouse, 3, true);
-        empresa.addProdutoEstoque(mouse, 1, true);
-        String resultado = empresa.visualizarEstoque();
-        String resultadoEsperado = "[Eletronicos{anoDeLancamento=2020, nome='Mouse gamer', descricao='Mouse para jogos', marca='Corsair', cor='Cinza', categoria='Gamer', valor=49.99, quantidade=4}]";
-        Assert.assertEquals(resultadoEsperado, resultado);
+    public String getNomeEmpresa() {
+        return nomeEmpresa;
     }
 
-    @Test
-    public void testNaoAddProdutoCasoNaoExista(){
-        //aqui, vamos testar o método addProdutoEstoque em um cenário onde
-        //a flag de adicionarAoEstoqueCasoNaoExista está em false
-        //resultado esperado é que o estoque esteja vazio
-        Empresa empresa = new Empresa("Amazon");
-        Produto mouse = new Eletronicos("Mouse gamer", "Mouse para jogos", "Corsair", "Cinza", "Gamer", 49.99,2, 123,  2020);
-        empresa.addProdutoEstoque(mouse, 1, false);
-        String resultado = empresa.visualizarEstoque();
-        String resultadoEsperado = "Vazio";
-        Assert.assertEquals(resultadoEsperado, resultado);
+    public void setNomeEmpresa(String nomeEmpresa) {
+        this.nomeEmpresa = nomeEmpresa;
     }
 
-    //testes do método removerProdutoEstoque
-
-    @Test
-    public void testRemoverProdutoEstoque(){
-        //aqui, vamos testar o método removerProdutoEstoque, em um cenário padrão de funcionamento
-        Empresa empresa = new Empresa("Amazon");
-        Produto carregadorIphone = new Eletronicos("Carregador de Iphone", "Carregador homologado Apple", "Apple", "Branco", "Carregador", 89.99, 0, 456,  2022);
-        empresa.addProdutoEstoque(carregadorIphone, 4, true);
-        empresa.removerProdutoEstoque(carregadorIphone, 1);
-        String resultado = empresa.visualizarEstoque();
-        String resultadoEsperado = "[Eletronicos{anoDeLancamento=2022, nome='Carregador de Iphone', descricao='Carregador homologado Apple', marca='Apple', cor='Branco', categoria='Carregador', valor=89.99, quantidade=3}]";
-        Assert.assertEquals(resultadoEsperado, resultado);
+    @Override
+    public String toString() {
+        return "Empresa{" +
+                "nomeEmpresa='" + nomeEmpresa + '\'' +
+                ", carrinho=" + carrinho +
+                ", estoque=" + estoque +
+                '}';
     }
 
-    @Test
-    public void testNaoDeveRemoverProdutoEstoqueSeNaoExiste(){
-        //aqui, vamos testar o método removerProdutoEstoque, em um cenário onde o método
-        //identifica que o produto não existe no estoque, logo não remove
-        //estoque continua vazio
-        Empresa empresa = new Empresa("Amazon");
-        Produto carregadorIphone = new Eletronicos("Carregador de Iphone", "Carregador homologado Apple", "Apple", "Branco", "Carregador", 89.99, 0, 456,  2022);
-        empresa.removerProdutoEstoque(carregadorIphone, 1);
-        String resultado = empresa.visualizarEstoque();
-        String resultadoEsperado = "Vazio";
-        Assert.assertEquals(resultadoEsperado, resultado);
+    /*public void addProdutoEstoque(Produto produto, int quantidade){
+        for (int i=0; i<quantidade; i++){
+            estoque.add(produto);
+        }
+        System.out.println("Novo item adicionado ao estoque:");
+        System.out.println(estoque);
+        System.out.println();
+    }*/
+
+    public boolean addProdutoEstoque(Produto produto, int quantidade) {
+        return addProdutoEstoque(produto, quantidade, true);
     }
 
-    @Test
-    public void testRemoverProdutoEstoqueSeQuantidadeMaiorQueDoEstoque(){
-        //testando no caso do usuário tentar retirar uma quantidade de um produto maior do que a quantidade existente já no estoque
-        //nesse caso, deve zerar o estoque
-        Empresa empresa = new Empresa("Amazon");
-        Produto carregadorIphone = new Eletronicos("Carregador de Iphone", "Carregador homologado Apple", "Apple", "Branco", "Carregador", 89.99, 0, 456,  2022);
-        empresa.addProdutoEstoque(carregadorIphone, 2, true);
-        empresa.removerProdutoEstoque(carregadorIphone, 3);
-        String resultado = empresa.visualizarEstoque();
-        String resultadoEsperado = "Vazio";
-        Assert.assertEquals(resultadoEsperado, resultado);
+    public boolean addProdutoEstoque(Produto produto, int quantidade, boolean adicionarAoEstoqueCasoNaoExista) {
+        //Procura no estoque o produto do parâmetro
+        for (Produto p: estoque) {
+            //Se achou o produto, modifica o estoque e sai da função
+            if(p.getCodigo() == produto.getCodigo()){
+            	JOptionPane.showMessageDialog(null, "Adicionando estoque de item já cadastrado...", "Espera",
+                  		JOptionPane.INFORMATION_MESSAGE);
+                p.adicionaQuantidade(quantidade);
+                JOptionPane.showMessageDialog(null, p, "Cadastro",
+                  		JOptionPane.INFORMATION_MESSAGE);
+                return true;
+            }
+        }
+
+        //Se não encontrou o produto no estoque, e a flag de adição está habilitada, adiciona ao estoque
+        if(adicionarAoEstoqueCasoNaoExista){
+        	JOptionPane.showMessageDialog(null, "Novo produto cadastrado ao estoque!", "Cadastro",
+              		JOptionPane.INFORMATION_MESSAGE);
+            produto.setQuantidade(quantidade);
+            System.out.println(produto);
+            estoque.add(produto);
+            return true;
+        } else {
+        	JOptionPane.showMessageDialog(null, "Não foi possível adicionar o item " + produto.toString() + "\nItem não está cadastrado ao estoque.", "Erro",
+              		JOptionPane.ERROR_MESSAGE);
+            System.out.println();
+            System.out.println();
+            return false;
+        }
     }
 
-    //testes do método addProdutoCarrinho
-    @Test
-    public void testAddProdutoCarrinho(){
-        //aqui, vamos testar o método addProdutoCarrinho, em um cenário padrão de funcionamento
-        //o produto existe no estoque, e devemos adicioná-lo no carrinho normalmente
-        Empresa empresa = new Empresa("Amazon");
-        Produto livro = new Livros("Código limpo: Habilidades práticas do Agile", "Código limpo: Habilidades práticas do Agile", 89.99, 3, 4444, "Robert C. Martin", "Alta Books", "Educação", "Livro Físico - Capa Dura" );
-        empresa.addProdutoEstoque(livro, 5, true);
-        empresa.addProdutoCarrinho(livro, 3);
-        String resultado = empresa.visualizarCarrinho();
-        String resultadoEsperado = "[Item{produto=Livros{Autor: Robert C. Martineditora= Alta Booksgenero= Educaçãoformato= Livro Físico - Capa Dura, nome='Código limpo: Habilidades práticas do Agile', descricao='Código limpo: Habilidades práticas do Agile', valor=89.99, quantidade=5}, quantidade=3}]";
-        Assert.assertEquals(resultadoEsperado, resultado);
+    /*public void removerProdutoEstoque(Produto produto, int quantidade) {
+        int count = 0; // Contador para verificar o número de ocorrências do produto no estoque
+
+        // Verifica a quantidade de ocorrências do produto no estoque
+        for (Produto p : estoque) {
+            if (p.equals(produto)) {
+                count++;
+            }
+        }
+        // Verifica se a quantidade no estoque é maior ou igual à quantidade desejada
+        if (count >= quantidade) {
+            for (int i = 0; i < quantidade; i++) {
+                estoque.remove(produto);
+            }
+            System.out.println(estoque);
+        } else {
+            //da pra tipo, se o cara tentar tirar mais produtos do que tem ali no carrinho, so pegar e zerar aquele produto no estoque dele, ou exibir alguma msg, isso é detalhe, a gente pensa
+            System.out.println("Tem apenas " + count + " " + produto.getNome() + " no estoque.");
+        }
+    }*/
+
+    public int removerProdutoEstoque(Produto produto, int quantidade) {
+        // Encontra produto no estoque e remove caso
+        for (Produto p : estoque) {
+            if (p.equals(produto)) {
+                if(p.getQuantidade() > quantidade){
+                    p.removeQuantidade(quantidade);
+                    return 0;
+                } else {
+                    estoque.remove(p);
+                    return 1;
+                }
+            }
+        }
+
+        return -1;
     }
 
-    @Test
-    public void testAddProdutoCarrinhoQueNaoTemNoEstoque() {
-        //aqui, vamos testar o método addProdutoCarrinho, em um cenário onde o produto a ser
-        //adicionado ao carrinho não existe no estoque
-        //carrinho continua vazio
-        Empresa empresa = new Empresa("Amazon");
-        Produto livro = new Livros("Código limpo: Habilidades práticas do Agile", "Código limpo: Habilidades práticas do Agile", 89.99, 3, 4444, "Robert C. Martin", "Alta Books", "Educação", "Livro Físico - Capa Dura" );
-        empresa.addProdutoCarrinho(livro, 2);
-        String resultado = empresa.visualizarCarrinho();
-        String resultadoEsperado = "Vazio";
-        Assert.assertEquals(resultadoEsperado, resultado);
+    //Função que adiciona a quantidade de produtos ao carrinho, se houver a quantidade no estoque
+    //Retorna true se adicionou com sucesso, senão retorna false
+    public boolean addProdutoCarrinho(Produto produto, int quantidade) {
+        int count = 0; // Contador para verificar o número de ocorrências do produto no estoque
+
+        // Verifica a quantidade de ocorrências do produto no estoque
+        for (Produto p : estoque) {
+            if (p.equals(produto)) {
+                if (p.getQuantidade() >= quantidade){
+
+                    //Checa se o item já não está no carrinho, se estiver, adiciona mais itens
+                    boolean estaNoCarrinho = false;
+                    for (Item it: carrinho) {
+                        if(it.getProduto().equals(produto)){
+                            estaNoCarrinho = true;
+                            if (it.getQuantidade() + quantidade <= produto.getQuantidade()){
+                                it.adicionaQuantidade(quantidade);
+                                break;
+                            } else {
+                            	JOptionPane.showMessageDialog(null, "Quantidade insuficiente no estoque! Item já está no carrinho!", "Erro",
+                                  		JOptionPane.ERROR_MESSAGE);
+                                return false;
+                            }
+                        }
+                    }
+
+                    if (estaNoCarrinho == false) {
+                        carrinho.add(new Item(p, quantidade));
+                    }
+
+                    //Mostra informações do carrinho após adicionar ao estoque carrinho
+                    visualizarCarrinho();
+                    return true;
+                } else {
+                	JOptionPane.showMessageDialog(null, "Quantidade insuficiente no estoque!", "Erro",
+                      		JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+
+            }
+        }
+        return false;
     }
 
-    @Test
-    public void testAddProdutoCarrinhoQuantidadeMaiorQueNoEstoque(){
-        //aqui, vamos testar o método addProdutoCarrinho, em um cenário onde o usuário tenta adicionar uma quantidade do
-        //produto ao carrinho maior do que a quantidade existente no estoque, assim, o carrinho continua vazio
-        //é informado ao usuário que a quantidade no estoque é insuficiente
-        Empresa empresa = new Empresa("Amazon");
-        Produto livro = new Livros("Código limpo: Habilidades práticas do Agile", "Código limpo: Habilidades práticas do Agile", 89.99, 3, 4444, "Robert C. Martin", "Alta Books", "Educação", "Livro Físico - Capa Dura" );
-        empresa.addProdutoEstoque(livro, 1, true);
-        empresa.addProdutoCarrinho(livro, 3);
-        String resultado = empresa.visualizarCarrinho();
-        String resultadoEsperado = "Vazio";
-        Assert.assertEquals(resultadoEsperado, resultado);
+
+    /*public void removerProdutoCarrinho(Produto produto, int quantidade){
+        int count = 0; // Contador para verificar o número de ocorrências do produto no carrinho (para nao ser possivel ter 2 mouses no carrinho e querer tirar 3
+
+        // Verifica a quantidade de ocorrências do produto no carrinho
+        for (Item it : carrinho) {
+            if (it.getProduto().equals(produto)) {
+                count++;
+            }
+        }
+        // Verifica se a quantidade no estoque é maior ou igual à quantidade desejada
+        if (count >= quantidade) {
+            for (int i = 0; i < quantidade; i++) {
+                carrinho.remove(produto);
+            }
+            System.out.println(carrinho);
+        } else {
+            //da pra tipo, se o cara tentar tirar mais produtos do que tem ali no carrinho, so pegar e zerar aquele produto no carrinho dele, ou exibir alguma msg, isso é detalhe, a gente pensa
+            System.out.println("Tem apenas " + count + " " + produto.getNome() + " no seu carrinho.");
+        }
+    }*/
+
+    public int removeProdutoCarrinho(Produto produto, int quantidade){
+        // Encontra produto no estoque e remove caso
+        for (Item p : carrinho) {
+            if (p.getProduto().equals(produto)) {
+                if(p.getQuantidade() > quantidade){
+                    p.removeQuantidade(quantidade);
+                    return 0;
+                } else {
+                	JOptionPane.showMessageDialog(null, "Item removido do carrinho!", "Sucesso",
+                      		JOptionPane.INFORMATION_MESSAGE);
+                    carrinho.remove(p);
+                    return 1;
+                }
+            }
+        }
+
+        return -1;
     }
 
-    @Test
-    public void testAddProdutoCarrinhoQuandoProdutoJaEstaNoCarrinho(){
-        //aqui, vamos testar o método addProdutoCarrinho, em um cenário onde o usuário tenta adicionar um produto que já se encontra no carrinho
-        //assim, o carrinho mantem-se no seu estado anterior, porque nesse caso, tentaria adicionar 6 do produto e tem apenas 5 no estoque
-        Empresa empresa = new Empresa("Amazon");
-        Produto livro = new Livros("Código limpo: Habilidades práticas do Agile", "Código limpo: Habilidades práticas do Agile", 89.99, 3, 4444, "Robert C. Martin", "Alta Books", "Educação", "Livro Físico - Capa Dura" );
-        empresa.addProdutoEstoque(livro, 5, true);
-        empresa.addProdutoCarrinho(livro, 3);
-        empresa.addProdutoCarrinho(livro, 3);
-        String resultado = empresa.visualizarCarrinho();
-        String resultadoEsperado = "[Item{produto=Livros{Autor: Robert C. Martineditora= Alta Booksgenero= Educaçãoformato= Livro Físico - Capa Dura, nome='Código limpo: Habilidades práticas do Agile', descricao='Código limpo: Habilidades práticas do Agile', valor=89.99, quantidade=5}, quantidade=3}]";
-        Assert.assertEquals(resultadoEsperado, resultado);
+    public String visualizarCarrinho(){
+    	Eletronicos.contList = 0;
+    	Eletrodomestico.contList = 0;
+    	Roupas.contList = 0;
+    	Livros.contList = 0;
+        if(!carrinho.isEmpty()) {
+           // System.out.println("Carrinho do cliente:");
+            //System.out.println(carrinho);
+            for (Item p: carrinho){
+               // System.out.println(p.toString());
+            }
+            System.out.println();
+           
+            return carrinho.toString();
+        } else {
+           // System.out.println("Carrinho vazio!");
+            System.out.println();
+            return "Vazio";
+        }
     }
 
-    //testes do método removeProdutoCarrinho
+    public ArrayList<Produto> listarItensCarrinho(){
+        ArrayList<Produto> tmpCarrinho = new ArrayList<>();
+        int quantItems = 0;
+        Eletronicos.contList = 0;
+    	Eletrodomestico.contList = 0;
+    	Roupas.contList = 0;
+    	Livros.contList = 0;
 
-    @Test
-    public void testRemoveProdutoCarrinho(){
-        //aqui, vamos testar o método removeProdutoCarrinho, em um cenário padrão de funcionamento
-        //o produto existe no carrinho e vamos retirá-lo por completo, todas as unidades, assim, carrinho fica zerado
-        Empresa empresa = new Empresa("Amazon");
-        Produto camisetaPolo = new Roupas("Camiseta Polo", "Camiseta Polo Listrada", "Polo", "Cinza e preto", "Camisetas", 99.99, 1, 999, "M", "Algodão");
-        empresa.addProdutoEstoque(camisetaPolo, 5, true);
-        empresa.addProdutoCarrinho(camisetaPolo, 3);
-        empresa.removeProdutoCarrinho(camisetaPolo, 3);
-        String resultado = empresa.visualizarCarrinho();
-        String resultadoEsperado = "Vazio";
-        Assert.assertEquals(resultadoEsperado, resultado);
+        for (Item p: carrinho){
+            tmpCarrinho.add(p.getProduto());
+            quantItems++;
+           // System.out.println(quantItems + ") " + tmpCarrinho.get(tmpCarrinho.size()-1).toString());
+        }
+
+        if (quantItems > 0){
+            return tmpCarrinho;
+        } else {
+            return null;
+        }
     }
 
-    @Test
-    public void testRemoveProdutoCarrinhoDeixandoAlgumasQuantidades(){
-        //aqui, vamos testar o método removeProdutoCarrinho em um cenário onde o usuário remove apenas algumas unidades do produto
-        //do carrinho, atualizando a quantidade do produto no carrinho
-        Empresa empresa = new Empresa("Amazon");
-        Produto camisetaPolo = new Roupas("Camiseta Polo", "Camiseta Polo Listrada", "Polo", "Cinza e preto", "Camisetas", 99.99, 1, 999, "M", "Algodão");
-        empresa.addProdutoEstoque(camisetaPolo, 5, true);
-        empresa.addProdutoCarrinho(camisetaPolo, 3);
-        empresa.removeProdutoCarrinho(camisetaPolo, 1);
-        String resultado = empresa.visualizarCarrinho();
-        String resultadoEsperado = "[Item{produto=Roupas{tamanho='M', tecido='Algodão', nome='Camiseta Polo', descricao='Camiseta Polo Listrada', marca='Polo', cor='Cinza e preto', categoria='Camisetas', valor=99.99, quantidade=5, codigo=999}, quantidade=2}]";
-        Assert.assertEquals(resultadoEsperado, resultado);
+    public ArrayList<Produto> listarEletronicosEstoque(){
+        ArrayList<Produto> tmpEstoque = new ArrayList<>();
+        int quantItems = 0;
+        Eletronicos.contList = 0; // Zerar a listagem, caso for anteriormente usada o toString de Eletronicos.
+
+        for (Produto p: estoque){
+            if(p instanceof Eletronicos){
+                tmpEstoque.add(p);
+                quantItems++;
+              //  System.out.println(quantItems + ") " + tmpEstoque.get(tmpEstoque.size()-1).toString());
+                
+            }
+        }
+
+        if (quantItems > 0){
+            return tmpEstoque;
+        } else {
+            return null;
+        }
     }
 
-    @Test
-    public void testRemoveProdutoCarrinhoQuantidadeMaiorQueDoCarrinho(){
-        //aqui, vamos testar o método removeProdutoCarrinho, em um cenário onde o usuário tenta
-        //remover uma quantidade do produto maior do que a existente no carrinho
-        //nesse caso, é zerado o produto no carrinho
-        //testando se caso o usuário solicite remover uma quantidade maior do que a do carrinho, o produto é removido do carrinho, todas as quantidades
-        Empresa empresa = new Empresa("Amazon");
-        Produto camisetaPolo = new Roupas("Camiseta Polo", "Camiseta Polo Listrada", "Polo", "Cinza e preto", "Camisetas", 99.99, 1, 999, "M", "Algodão");
-        empresa.addProdutoEstoque(camisetaPolo, 5, true);
-        empresa.addProdutoCarrinho(camisetaPolo, 3);
-        empresa.removeProdutoCarrinho(camisetaPolo, 6);
-        String resultado = empresa.visualizarCarrinho();
-        String resultadoEsperado = "Vazio";
-        Assert.assertEquals(resultadoEsperado, resultado);
+    public ArrayList<Produto> listarEletrodomesticosEstoque(){
+        ArrayList<Produto> tmpEstoque = new ArrayList<>();
+        int quantItems = 0;
+        Eletrodomestico.contList = 0; // Zerar a listagem, caso for anteriormente usada o toString de Eletrodomestico.
+
+        for (Produto p: estoque){
+            if(p instanceof Eletrodomestico){
+                tmpEstoque.add(p);
+                quantItems++;
+                //System.out.println(quantItems + ") " + tmpEstoque.get(tmpEstoque.size()-1).toString());
+            }
+        }
+
+        if (quantItems > 0){
+            return tmpEstoque;
+        } else {
+            return null;
+        }
     }
 
-    @Test
-    public void testRemoveProdutoCarrinhoSeProdutoNaoExisteNoCarrinho(){
-        //aqui, vamos testar o método removeProdutoCarrinho, em um cenário onde o usuário tenta remover
-        //um produto que não está no carrinho, assim, carrinho segue vazio
-        //testando se caso o usuário solicite remover uma quantidade maior do que a do carrinho, o produto é removido do carrinho, todas as quantidades
-        Empresa empresa = new Empresa("Amazon");
-        Produto camisetaPolo = new Roupas("Camiseta Polo", "Camiseta Polo Listrada", "Polo", "Cinza e preto", "Camisetas", 99.99, 1, 999, "M", "Algodão");
-        empresa.addProdutoEstoque(camisetaPolo, 5, true);
-        empresa.removeProdutoCarrinho(camisetaPolo, 2);
-        String resultado = empresa.visualizarCarrinho();
-        String resultadoEsperado = "Vazio";
-        Assert.assertEquals(resultadoEsperado, resultado);
+    public ArrayList<Produto> listarLivrosEstoque(){
+        ArrayList<Produto> tmpEstoque = new ArrayList<>();
+        int quantItems = 0;
+        Livros.contList = 0; // Zerar a listagem, caso for anteriormente usada o toString de Livros.
+
+        for (Produto p: estoque){
+            if(p instanceof Livros){
+                tmpEstoque.add(p);
+                quantItems++;
+               // System.out.println(quantItems + ") " + tmpEstoque.get(tmpEstoque.size()-1).toString());
+            }
+        }
+
+        if (quantItems > 0){
+            return tmpEstoque;
+        } else {
+            return null;
+        }
     }
 
-    //testes do método checkoutCarrinho
-    @Test
-    public void testCheckOutCarrinho(){
-        //aqui, vamos testar o método checkOutCarrinho, em um cenário de funcionamento padrão
-        //usuário adicionou alguns produtos ao carrinho e o checkout entra o valor gasto na compra
-        Empresa empresa = new Empresa("Amazon");
-        Produto camisetaPolo = new Roupas("Camiseta Polo", "Camiseta Polo Listrada", "Polo", "Cinza e preto", "Camisetas", 100, 1, 999, "M", "Algodão");
-        empresa.addProdutoEstoque(camisetaPolo, 5, true);
-        empresa.addProdutoCarrinho(camisetaPolo, 2);
-        Produto geladeira = new Eletrodomestico("Geladeira", "Geladeira Moderna", "Brastemp", "Preta", "Eletrodomestico", 1800, 3, "56kWh/mes", 29283);
-        empresa.addProdutoEstoque(geladeira, 5);
-        empresa.addProdutoCarrinho(geladeira, 1);
-        double resultadoEsperado = 2000;
-        double resultado = empresa.checkoutCarrinho();
-        Assert.assertEquals(resultadoEsperado, resultado, 0);
+    public ArrayList<Produto> listarRoupasEstoque(){
+        ArrayList<Produto> tmpEstoque = new ArrayList<>();
+        int quantItems = 0;
+        Roupas.contList = 0; // Zerar a listagem, caso for anteriormente usada o toString de Roupas.
+
+        for (Produto p: estoque){
+            if(p instanceof Roupas){
+                tmpEstoque.add(p);
+                quantItems++;
+               // System.out.println(quantItems + ") " + tmpEstoque.get(tmpEstoque.size()-1).toString());
+            }
+        }
+
+        if (quantItems > 0){
+            return tmpEstoque;
+        } else {
+            return null;
+        }
     }
 
-    @Test
-    public void testCheckOutCarrinhoDeveSerZeroSeNenhumItemNoCarrinho(){
-        //teste quando o carrinho estiver vazio, o valor gasto deve ser zero
-        Empresa empresa = new Empresa("Amazon");
-        Produto camisetaPolo = new Roupas("Camiseta Polo", "Camiseta Polo Listrada", "Polo", "Cinza e preto", "Camisetas", 100, 1, 999, "M", "Algodão");
-        empresa.addProdutoCarrinho(camisetaPolo, 2);
-        Produto geladeira = new Eletrodomestico("Geladeira", "Geladeira Moderna", "Brastemp", "Preta", "Eletrodomestico", 1800, 3, "56kWh/mes", 29283);
-        empresa.addProdutoCarrinho(geladeira, 1);
-        double resultadoEsperado = 0;
-        double resultado = empresa.checkoutCarrinho();
-        Assert.assertEquals(resultadoEsperado, resultado, 0);
+    public String visualizarEstoque(){
+        if (!estoque.isEmpty()) {
+            System.out.println("Estoque da loja:");
+            //System.out.println(estoque);
+            for (Produto p: estoque){
+                System.out.println(p.toString());
+            }
+            System.out.println();
+            return estoque.toString();
+        } else {
+            System.out.println("Estoque vazio!");
+            System.out.println();
+            return "Vazio";
+        }
     }
 
-    //testes do construtor da classe empresa
-    @Test
-    public void testConstrutor(){
-        //testando o construtor da classe
-        Empresa amazon = new Empresa("Amazon");
-        String resultadoEsperado = "Amazon";
-        Assert.assertEquals(resultadoEsperado, amazon.getNomeEmpresa());
+    public double checkoutCarrinho(){
+        double valorGasto = 0;
+
+        for (Item it: carrinho){
+            if(it.getProduto().getQuantidade() >= it.getQuantidade()){
+                it.getProduto().removeQuantidade(it.getQuantidade());
+                valorGasto += it.getProduto().getValor()*it.getQuantidade();
+            }
+        }
+
+        System.out.println("Checkout realizado!");
+        System.out.println("Valor gasto na compra: " + String.format("R$%.2f", valorGasto));
+        System.out.println();
+        carrinho.clear();
+        return valorGasto;
     }
 
-    @Test
-    public void testConstrutorIsString(){
-        //testando se é do tipo String o argumento da classe empresa
-        Empresa mercadoLivre = new Empresa("Mercado Livre");
-        Assert.assertEquals(true, mercadoLivre.getNomeEmpresa() instanceof String);
+    public double finalizarCompra(){
+        double valorGasto;
+
+        valorGasto = checkoutCarrinho();
+        visualizarCarrinho();
+        visualizarEstoque();
+        return valorGasto;
     }
 
-    //testes do método getNomeEmpresa e setNomeEmpresa
-    @Test
-    public void testGetNomeEmpresa(){
-        Empresa amazon = new Empresa("Amazon");
-        Assert.assertEquals("Amazon", amazon.getNomeEmpresa());
-        Assert.assertEquals(true, amazon.getNomeEmpresa() instanceof String);
-    }
+    public Produto retornaProdutoDoEstoqueComCodigo(long codigo) {
+        for (Produto p: estoque) {
+            if (p.getCodigo() == codigo){
+                return p;
+            }
+        }
 
-    @Test
-    public void testSetNomeEmpresa(){
-        Empresa mercadoLivre = new Empresa(null);
-        mercadoLivre.setNomeEmpresa("Mercado Livre");
-        Assert.assertEquals("Mercado Livre", mercadoLivre.getNomeEmpresa());
-        Assert.assertEquals(true, mercadoLivre.getNomeEmpresa() instanceof String);
-    }
-    
-    //Testando toString
-
-    //falta teste do toString, do visualizarCarrinho, que teoricamente ja foi testado mas ne
-    //dp listarItensCarrinho, visualziarEstoque, listarEletronicosEstoque, listarEletromedistcosEstoque, livros, roupas, visualizarEstoque, finalziarcompra, retornarprodutocomcodigo
-    
-
-
-
-
-
-
+       return null;
+    };
 
 }
