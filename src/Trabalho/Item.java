@@ -44,11 +44,9 @@ public class Item {
 
     @Override
     public String toString() {
-    	
-    	
-        return "" +
-                   produto.toString() +
-                ", quantidade no carrinho = " + quantidade +
-                "\n";
+        return "Item{" +
+                "produto=" + produto.toString() +
+                ", quantidade=" + quantidade +
+                '}';
     }
 }

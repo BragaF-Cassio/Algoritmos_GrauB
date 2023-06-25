@@ -1,7 +1,7 @@
 package Trabalho;
-public class Roupas extends Produto{
+
+public class Roupas extends Produto {
     private String tamanho, tecido;
-    public static int contList = 0;
 
     public String getTamanho() {
         return tamanho;
@@ -28,21 +28,19 @@ public class Roupas extends Produto{
     public Roupas(Roupas outro){
         super(outro);
     }
-    
+
     @Override
     public String toString() {
-    	contList++;
-        return " \n" + contList + ") " +
-        		" nome = " + nome + '\'' +
-                ", tamanho = " + tamanho + '\'' +
-                ", tecido = " + tecido + '\'' +
-                ", descricao = " + descricao + '\'' +
-                ", marca = " + marca + '\'' +
-                ", cor = " + cor + '\'' +
-                ", categoria = " + categoria + '\'' +
-                ", valor = " + valor +
-                ", quantidade = " + quantidade +
-                ", codigo = " + codigo +
-                "\n";
+        return "{Nome='" + nome + '\'' +
+                ", Valor=" + valor +
+                ", Tamanho='" + tamanho + '\'' +
+                ", Tecido='" + tecido + '\'' +
+                ", Descricao='" + descricao + '\'' +
+                ", Marca='" + marca + '\'' +
+                ", Cor='" + cor + '\'' +
+                ", Categoria='" + categoria + '\'' +
+                ", Quantidade=" + quantidade +
+                ", Codigo=" + codigo +
+                '}';
     }
 }

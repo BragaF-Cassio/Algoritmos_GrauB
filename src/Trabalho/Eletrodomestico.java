@@ -1,7 +1,7 @@
 package Trabalho;
+
 public class Eletrodomestico extends Produto{
     private String eficienciaEnergetica;
-    public static int contList = 0;
 
     public Eletrodomestico(String nome, String descricao, String marca, String cor, String categoria, double valor, int quantidade, String eficienciaEnergetica, long codigo) {
         super(nome, descricao, marca, cor, categoria, valor, quantidade, codigo);
@@ -19,23 +19,19 @@ public class Eletrodomestico extends Produto{
     public void setEficienciaEnergetica(String eficienciaEnergetica) {
         this.eficienciaEnergetica = eficienciaEnergetica;
     }
-    
+
     @Override
     public String toString() {
-    	
-    	contList++; // Contagem para Listar
-        return " \n" + contList  +
-                
-                ", nome = " + nome + '\'' +
-                ", descricao = " + descricao + '\'' +
-                ", Eficiencia Energetica = " + eficienciaEnergetica +
-                ", marca = " + marca + '\'' +
-                ", cor = " + cor + '\'' +
-                ", categoria = " + categoria + '\'' +
-                ", valor = " + valor +
-                ", quantidade = " + quantidade +
-                ",  codigo = " + codigo +
-                "\n";
+        return  "{Nome='" + nome + '\'' +
+                ", Valor=" + valor +
+                ", Descrição='" + descricao + '\'' +
+                ", Eficiência Energética=" + eficienciaEnergetica +
+                ", Marca='" + marca + '\'' +
+                ", Cor='" + cor + '\'' +
+                ", Categoria='" + categoria + '\'' +
+                ", Quantidade=" + quantidade +
+                ", Código=" + codigo +
+                '}';
     }
 
 

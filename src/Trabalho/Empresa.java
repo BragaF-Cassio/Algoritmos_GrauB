@@ -1,14 +1,9 @@
 package Trabalho;
 
-
-//import java.io.Serializable;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import javax.swing.JOptionPane;
-//import org.apache.commons.lang.SerializationUtils;
-public class Empresa {
+public class Empresa implements Serializable {
     private String nomeEmpresa;
     private List<Item> carrinho = new ArrayList<>();
     private List<Produto> estoque = new ArrayList<>();
@@ -34,15 +29,6 @@ public class Empresa {
                 '}';
     }
 
-    /*public void addProdutoEstoque(Produto produto, int quantidade){
-        for (int i=0; i<quantidade; i++){
-            estoque.add(produto);
-        }
-        System.out.println("Novo item adicionado ao estoque:");
-        System.out.println(estoque);
-        System.out.println();
-    }*/
-
     public boolean addProdutoEstoque(Produto produto, int quantidade) {
         return addProdutoEstoque(produto, quantidade, true);
     }
@@ -52,52 +38,27 @@ public class Empresa {
         for (Produto p: estoque) {
             //Se achou o produto, modifica o estoque e sai da função
             if(p.getCodigo() == produto.getCodigo()){
-            	JOptionPane.showMessageDialog(null, "Adicionando estoque de item já cadastrado...", "Espera",
-                  		JOptionPane.INFORMATION_MESSAGE);
+                System.out.println("Adicionando estoque de item já cadastrado...");
                 p.adicionaQuantidade(quantidade);
-                JOptionPane.showMessageDialog(null, p, "Cadastro",
-                  		JOptionPane.INFORMATION_MESSAGE);
+                System.out.println(p);
                 return true;
             }
         }
 
         //Se não encontrou o produto no estoque, e a flag de adição está habilitada, adiciona ao estoque
         if(adicionarAoEstoqueCasoNaoExista){
-        	JOptionPane.showMessageDialog(null, "Novo produto cadastrado ao estoque!", "Cadastro",
-              		JOptionPane.INFORMATION_MESSAGE);
+            System.out.println("Novo produto cadastrado ao estoque!");
             produto.setQuantidade(quantidade);
             System.out.println(produto);
             estoque.add(produto);
             return true;
         } else {
-        	JOptionPane.showMessageDialog(null, "Não foi possível adicionar o item " + produto.toString() + "\nItem não está cadastrado ao estoque.", "Erro",
-              		JOptionPane.ERROR_MESSAGE);
-            System.out.println();
+            System.out.println("Não foi possível adicionar o item " + produto.toString());
+            System.out.println("Item não está cadastrado ao estoque.");
             System.out.println();
             return false;
         }
     }
-
-    /*public void removerProdutoEstoque(Produto produto, int quantidade) {
-        int count = 0; // Contador para verificar o número de ocorrências do produto no estoque
-
-        // Verifica a quantidade de ocorrências do produto no estoque
-        for (Produto p : estoque) {
-            if (p.equals(produto)) {
-                count++;
-            }
-        }
-        // Verifica se a quantidade no estoque é maior ou igual à quantidade desejada
-        if (count >= quantidade) {
-            for (int i = 0; i < quantidade; i++) {
-                estoque.remove(produto);
-            }
-            System.out.println(estoque);
-        } else {
-            //da pra tipo, se o cara tentar tirar mais produtos do que tem ali no carrinho, so pegar e zerar aquele produto no estoque dele, ou exibir alguma msg, isso é detalhe, a gente pensa
-            System.out.println("Tem apenas " + count + " " + produto.getNome() + " no estoque.");
-        }
-    }*/
 
     public int removerProdutoEstoque(Produto produto, int quantidade) {
         // Encontra produto no estoque e remove caso
@@ -135,8 +96,7 @@ public class Empresa {
                                 it.adicionaQuantidade(quantidade);
                                 break;
                             } else {
-                            	JOptionPane.showMessageDialog(null, "Quantidade insuficiente no estoque! Item já está no carrinho!", "Erro",
-                                  		JOptionPane.ERROR_MESSAGE);
+                                System.out.println("Quantidade insuficiente no estoque! Item já está no carrinho.");
                                 return false;
                             }
                         }
@@ -150,8 +110,7 @@ public class Empresa {
                     visualizarCarrinho();
                     return true;
                 } else {
-                	JOptionPane.showMessageDialog(null, "Quantidade insuficiente no estoque!", "Erro",
-                      		JOptionPane.ERROR_MESSAGE);
+                    System.out.println("Quantidade insuficiente no estoque!");
                     return false;
                 }
 
@@ -159,28 +118,6 @@ public class Empresa {
         }
         return false;
     }
-
-
-    /*public void removerProdutoCarrinho(Produto produto, int quantidade){
-        int count = 0; // Contador para verificar o número de ocorrências do produto no carrinho (para nao ser possivel ter 2 mouses no carrinho e querer tirar 3
-
-        // Verifica a quantidade de ocorrências do produto no carrinho
-        for (Item it : carrinho) {
-            if (it.getProduto().equals(produto)) {
-                count++;
-            }
-        }
-        // Verifica se a quantidade no estoque é maior ou igual à quantidade desejada
-        if (count >= quantidade) {
-            for (int i = 0; i < quantidade; i++) {
-                carrinho.remove(produto);
-            }
-            System.out.println(carrinho);
-        } else {
-            //da pra tipo, se o cara tentar tirar mais produtos do que tem ali no carrinho, so pegar e zerar aquele produto no carrinho dele, ou exibir alguma msg, isso é detalhe, a gente pensa
-            System.out.println("Tem apenas " + count + " " + produto.getNome() + " no seu carrinho.");
-        }
-    }*/
 
     public int removeProdutoCarrinho(Produto produto, int quantidade){
         // Encontra produto no estoque e remove caso
@@ -190,8 +127,7 @@ public class Empresa {
                     p.removeQuantidade(quantidade);
                     return 0;
                 } else {
-                	JOptionPane.showMessageDialog(null, "Item removido do carrinho!", "Sucesso",
-                      		JOptionPane.INFORMATION_MESSAGE);
+                    System.out.println("Item removido do carrinho!");
                     carrinho.remove(p);
                     return 1;
                 }
@@ -202,38 +138,29 @@ public class Empresa {
     }
 
     public String visualizarCarrinho(){
-    	Eletronicos.contList = 0;
-    	Eletrodomestico.contList = 0;
-    	Roupas.contList = 0;
-    	Livros.contList = 0;
         if(!carrinho.isEmpty()) {
-           // System.out.println("Carrinho do cliente:");
+            System.out.println("Carrinho do cliente:");
             //System.out.println(carrinho);
             for (Item p: carrinho){
-               // System.out.println(p.toString());
+                System.out.println(p.toString());
             }
             System.out.println();
-           
             return carrinho.toString();
         } else {
-           // System.out.println("Carrinho vazio!");
+            System.out.println("Carrinho vazio!");
             System.out.println();
             return "Vazio";
         }
     }
 
-    public ArrayList<Produto> listarItensCarrinho(){
+    public ArrayList<Produto> listarItensCarrinho(boolean asProduct){
         ArrayList<Produto> tmpCarrinho = new ArrayList<>();
         int quantItems = 0;
-        Eletronicos.contList = 0;
-    	Eletrodomestico.contList = 0;
-    	Roupas.contList = 0;
-    	Livros.contList = 0;
 
         for (Item p: carrinho){
             tmpCarrinho.add(p.getProduto());
             quantItems++;
-           // System.out.println(quantItems + ") " + tmpCarrinho.get(tmpCarrinho.size()-1).toString());
+            System.out.println(quantItems + ") " + tmpCarrinho.get(tmpCarrinho.size()-1).toString());
         }
 
         if (quantItems > 0){
@@ -243,17 +170,23 @@ public class Empresa {
         }
     }
 
+    public List<Item> listarItensCarrinho(){
+        if (!carrinho.isEmpty()) {
+            return carrinho;
+        } else {
+            return null;
+        }
+    }
+
     public ArrayList<Produto> listarEletronicosEstoque(){
         ArrayList<Produto> tmpEstoque = new ArrayList<>();
         int quantItems = 0;
-        Eletronicos.contList = 0; // Zerar a listagem, caso for anteriormente usada o toString de Eletronicos.
 
         for (Produto p: estoque){
             if(p instanceof Eletronicos){
                 tmpEstoque.add(p);
                 quantItems++;
-              //  System.out.println(quantItems + ") " + tmpEstoque.get(tmpEstoque.size()-1).toString());
-                
+                System.out.println(quantItems + ") " + tmpEstoque.get(tmpEstoque.size()-1).toString());
             }
         }
 
@@ -267,13 +200,12 @@ public class Empresa {
     public ArrayList<Produto> listarEletrodomesticosEstoque(){
         ArrayList<Produto> tmpEstoque = new ArrayList<>();
         int quantItems = 0;
-        Eletrodomestico.contList = 0; // Zerar a listagem, caso for anteriormente usada o toString de Eletrodomestico.
 
         for (Produto p: estoque){
             if(p instanceof Eletrodomestico){
                 tmpEstoque.add(p);
                 quantItems++;
-                //System.out.println(quantItems + ") " + tmpEstoque.get(tmpEstoque.size()-1).toString());
+                System.out.println(quantItems + ") " + tmpEstoque.get(tmpEstoque.size()-1).toString());
             }
         }
 
@@ -287,13 +219,12 @@ public class Empresa {
     public ArrayList<Produto> listarLivrosEstoque(){
         ArrayList<Produto> tmpEstoque = new ArrayList<>();
         int quantItems = 0;
-        Livros.contList = 0; // Zerar a listagem, caso for anteriormente usada o toString de Livros.
 
         for (Produto p: estoque){
             if(p instanceof Livros){
                 tmpEstoque.add(p);
                 quantItems++;
-               // System.out.println(quantItems + ") " + tmpEstoque.get(tmpEstoque.size()-1).toString());
+                System.out.println(quantItems + ") " + tmpEstoque.get(tmpEstoque.size()-1).toString());
             }
         }
 
@@ -307,13 +238,12 @@ public class Empresa {
     public ArrayList<Produto> listarRoupasEstoque(){
         ArrayList<Produto> tmpEstoque = new ArrayList<>();
         int quantItems = 0;
-        Roupas.contList = 0; // Zerar a listagem, caso for anteriormente usada o toString de Roupas.
 
         for (Produto p: estoque){
             if(p instanceof Roupas){
                 tmpEstoque.add(p);
                 quantItems++;
-               // System.out.println(quantItems + ") " + tmpEstoque.get(tmpEstoque.size()-1).toString());
+                System.out.println(quantItems + ") " + tmpEstoque.get(tmpEstoque.size()-1).toString());
             }
         }
 
@@ -324,19 +254,22 @@ public class Empresa {
         }
     }
 
-    public String visualizarEstoque(){
+    public ArrayList<Produto> visualizarEstoque(){
+        ArrayList<Produto> tmpEstoque = new ArrayList<>();
+
         if (!estoque.isEmpty()) {
             System.out.println("Estoque da loja:");
             //System.out.println(estoque);
             for (Produto p: estoque){
                 System.out.println(p.toString());
+                tmpEstoque.add(p);
             }
             System.out.println();
-            return estoque.toString();
+            return tmpEstoque;
         } else {
             System.out.println("Estoque vazio!");
             System.out.println();
-            return "Vazio";
+            return null;
         }
     }
 

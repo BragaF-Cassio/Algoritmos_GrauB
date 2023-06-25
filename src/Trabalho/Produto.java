@@ -1,5 +1,8 @@
 package Trabalho;
-public abstract class Produto {
+
+import java.io.Serializable;
+
+public abstract class Produto implements Serializable {
     protected String nome, descricao, marca, cor, categoria;
     protected double valor;
     protected int quantidade;

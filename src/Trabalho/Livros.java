@@ -1,10 +1,10 @@
 package Trabalho;
+
 public class Livros extends Produto {
     private String autor;
     private String editora;
     private String genero;
     private String formato;
-    public static int contList = 0;
 
     public Livros(String nome, String descricao, double valor, int quantidade, long codigo, String autor, String editora, String genero, String formato) {
         super(nome, descricao, valor, quantidade, codigo);
@@ -49,21 +49,18 @@ public class Livros extends Produto {
     public void setFormato(String formato) {
         this.formato = formato;
     }
-    
+
 
     @Override
     public String toString() {
-    	
-    	contList++; // Contagem para Listar
-        return " \n" + contList + ") " +
-                "nome: " + nome +
-                "Autor: " + autor +
-                "editora: " + editora +
-                "genero: " + genero +
-                "formato: " + formato +
-                ", descricao:'" + descricao + '\'' +
-                ", valor:" + valor +
-                ", quantidade = " + quantidade +
-                "\n";
+        return "{Nome='" + nome + '\'' +
+                ", Valor=" + valor +
+                ", Autor: " + autor +
+                ", Editora= " + editora +
+                ", Gênero= " + genero +
+                ", Formato= " + formato +
+                ", Descricao='" + descricao + '\'' +
+                ", Quantidade=" + quantidade +
+                '}';
     }
 }

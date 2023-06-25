@@ -1,7 +1,7 @@
 package Trabalho;
+
 public class Eletronicos extends Produto {
     private int anoDeLancamento;
-    public static int contList = 0;
 
     public Eletronicos(String nome, String descricao, String marca, String cor, String categoria, double valor, int quantidade, long codigo, int anoDeLancamento) {
         super(nome, descricao, marca, cor, categoria, valor, quantidade, codigo);
@@ -22,19 +22,14 @@ public class Eletronicos extends Produto {
 
     @Override
     public String toString() {
-    	
-    	contList++; // Contagem para Listar
-    	
-        return " \n" + contList + ") " +
-                
-                "nome = " + nome + '\'' +
-                ", descricao = " + descricao + '\'' +
-                ", anoDeLancamento = " + anoDeLancamento +
-                ", marca = " + marca + '\'' +
-                ", cor = " + cor + '\'' +
-                ", categoria = " + categoria + '\'' +
-                ", valor = " + valor +
-                ", quantidade = " + quantidade +
-                "\n";
+        return "{Nome='" + nome + '\'' +
+                ", Valor=" + valor +
+                ", Descrição='" + descricao + '\'' +
+                ", Ano De Lancamento=" + anoDeLancamento +
+                ", Marca='" + marca + '\'' +
+                ", Cor='" + cor + '\'' +
+                ", Categoria='" + categoria + '\'' +
+                ", Quantidade=" + quantidade +
+                '}';
     }
 }

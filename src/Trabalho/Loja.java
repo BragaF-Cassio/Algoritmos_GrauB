@@ -1,49 +1,34 @@
 package Trabalho;
 
-import java.io.IOError;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
-
-
-import javax.swing.*;
 
 public class Loja {
 
     static Scanner sc;
     static Empresa empresa;
-    static ImageIcon icon = new ImageIcon("src/images/Icone-Loja-Comercio5.png");
-    static ImageIcon iconCarrinho = new ImageIcon("src/images/carrinho.png");
-    
     public static void main(String[] args) {
         String nomeUsuario = "";
         String pergunta, resposta;
         int opcoes;
         boolean sair = false;
 
-      
-         
-
         Locale.setDefault(Locale.US);
-       
-      //  sc = new Scanner(System.in);
-        
-        nomeUsuario =  JOptionPane.showInputDialog("Digite o nome do cliente:");
-     
-       
-        
-        resposta =  JOptionPane.showInputDialog("Digite o nome da empresa:");
-       
-      
+        sc = new Scanner(System.in);
+
+        System.out.println("Digite o nome do cliente:");
+        nomeUsuario = sc.nextLine();
+
+        System.out.println("Digite o nome da empresa:");
+        resposta = sc.nextLine();
+
         //Criando a loja
         empresa = new Empresa(resposta);
         testeAdicionaProdutosAoEstoque();
 
         //Apresentação do programa
-        JOptionPane.showMessageDialog(null, nomeUsuario + ", seja bem-vindo a loja " + empresa.getNomeEmpresa() + "!", empresa.getNomeEmpresa(), 
-        		JOptionPane.INFORMATION_MESSAGE, icon);
+        System.out.println(nomeUsuario + ", seja bem-vindo a loja " + empresa.getNomeEmpresa() + "!");
 
         //Início das rotinas
         do {
@@ -58,34 +43,27 @@ public class Loja {
                     break;
 
                 case 1:
-                   int cadastro = cadastrarProdutos();
-                   JOptionPane.showMessageDialog(null, "Cadastro realizado!\n " + "Total de Itens Cadastrados: " + cadastro, empresa.getNomeEmpresa(), 
-                    		JOptionPane.INFORMATION_MESSAGE);
+                    cadastrarProdutos();
                     break;
 
                 case 2:
-                   double compra = comprarProdutos();
-                    JOptionPane.showMessageDialog(null, "Checkout realizado!\n " + "Valor gasto na compra: " + String.format("R$%.2f", compra), empresa.getNomeEmpresa(), 
-                     		JOptionPane.INFORMATION_MESSAGE);
+                    comprarProdutos();
                     break;
 
                 default:
-                	JOptionPane.showMessageDialog(null, "Opção inválida!", empresa.getNomeEmpresa(), 
-                     		JOptionPane.ERROR_MESSAGE);
+                    System.out.println("Opção inválida!");
             }
 
         } while (sair == false);
-        
-        JOptionPane.showMessageDialog(null, nomeUsuario + ", obrigado por utilizar nossos serviços!", empresa.getNomeEmpresa(), 
-        		JOptionPane.INFORMATION_MESSAGE, icon);
+        System.out.println(nomeUsuario + ", obrigado por utilizar nossos serviços!");
 
         //funcaoTeste();
-      
-        
+        sc.close();
     }
 
     public static double comprarProdutos(){
         ArrayList<Produto> tmpEstoque = null;
+        ArrayList<Item> tmpCarrinho = null;
         String pergunta;
         int opcoes;
         int indiceProduto;
@@ -99,7 +77,7 @@ public class Loja {
                     "5) Remover Item do Carrinho\n" +
                     "6) Listar Itens do Carrinho";
             opcoes = coletaRetornoUsuario(pergunta, "0) Finalizar compras", 6);
-           // System.out.println();
+            System.out.println();
 
             switch (opcoes){
                 case 0:
@@ -107,48 +85,35 @@ public class Loja {
 
                 case 1:
                     tmpEstoque = empresa.listarEletronicosEstoque();
-                    JOptionPane.showMessageDialog(null, " Eletronicos:\n" + tmpEstoque.toString(), empresa.getNomeEmpresa(), 
-                    		JOptionPane.INFORMATION_MESSAGE, icon);
                     break;
 
                 case 2:
                     tmpEstoque = empresa.listarEletrodomesticosEstoque();
-                    JOptionPane.showMessageDialog(null, " Eletrodomestico:\n" + tmpEstoque.toString(), empresa.getNomeEmpresa(), 
-                    		JOptionPane.INFORMATION_MESSAGE, icon);
                     break;
 
                 case 3:
                     tmpEstoque = empresa.listarLivrosEstoque();
-                    JOptionPane.showMessageDialog(null, " Livros:\n" + tmpEstoque.toString(), empresa.getNomeEmpresa(), 
-                    		JOptionPane.INFORMATION_MESSAGE, icon);
                     break;
 
                 case 4:
                     tmpEstoque = empresa.listarRoupasEstoque();
-                    JOptionPane.showMessageDialog(null, " Roupas:\n" + tmpEstoque.toString(), empresa.getNomeEmpresa(), 
-                    		JOptionPane.INFORMATION_MESSAGE, icon);
                     break;
 
                 case 5:
-                    tmpEstoque = empresa.listarItensCarrinho();
-                    JOptionPane.showMessageDialog(null, " Carrinho:\n" + tmpEstoque.toString(), empresa.getNomeEmpresa(), 
-                    		JOptionPane.INFORMATION_MESSAGE, iconCarrinho);
+                    tmpEstoque = empresa.listarItensCarrinho(true);
                     break;
 
                 case 6:
-				
-                	JOptionPane.showMessageDialog(null,"Carrinho do cliente: \n" + empresa.visualizarCarrinho(), empresa.getNomeEmpresa(), 
-                    		JOptionPane.INFORMATION_MESSAGE, iconCarrinho);
+                    empresa.visualizarCarrinho();
                     break;
 
                 default:
-                	 JOptionPane.showMessageDialog(null, "Opção inválida!", empresa.getNomeEmpresa(), 
-                      		JOptionPane.ERROR_MESSAGE);
+                    System.out.println("Opção inválida!");
             }
 
             if(tmpEstoque != null && opcoes != 6) {
                 if (opcoes >= 1 && opcoes <= 4) {
-                    indiceProduto = coletaRetornoUsuario("Digite o numero de uma das opções anteriores, ou 0 para Cancelar:", "", tmpEstoque.size());
+                    indiceProduto = coletaRetornoUsuario("Escolha uma das opções acima, ou 0 para Cancelar:", "", tmpEstoque.size());
                     indiceProduto--;
                     if (indiceProduto >= 0) {
                         quantidade = coletaInteiroComProtecao("Insira a quantidade do produto que se deseja adicionar ao carrinho (0 - " +
@@ -159,7 +124,7 @@ public class Loja {
                         }
                     }
                 } else if (opcoes == 5) {
-                    indiceProduto = coletaRetornoUsuario("Digite o numero de uma das opções anteriores, ou 0 para Cancelar:", "", tmpEstoque.size());
+                    indiceProduto = coletaRetornoUsuario("Escolha uma das opções acima, ou 0 para Cancelar:", "", tmpEstoque.size());
                     indiceProduto--;
                     if (indiceProduto >= 0) {
                         quantidade = coletaInteiroComProtecao("Insira a quantidade do produto que se deseja remover do carrinho (0 - " +
@@ -203,17 +168,13 @@ public class Loja {
                     break;
 
                 case 1:
-                	String e;
-                	e = JOptionPane.showInputDialog(null, "Digite o código do produto: " , 
-                            empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                       		);
-                    codigo = Long.valueOf(e);
-                    
+                    System.out.println("Digite o código do produto:");
+                    codigo = sc.nextLong();
+                    sc.nextLine();
                     tmpProduto = empresa.retornaProdutoDoEstoqueComCodigo(codigo);
                     if (tmpProduto != null){
                         if (tmpProduto instanceof Eletronicos){
-                        	JOptionPane.showMessageDialog(null, "Código de produto já está em uso por produto da categoria de Eletrônicos.", empresa.getNomeEmpresa(), 
-                              		JOptionPane.WARNING_MESSAGE);
+                            System.out.println("Código de produto já está em uso por produto da categoria de Eletrônicos.");
                             if(fazPergunta("Deseja adicionar estoque ao produto?\n\n" + tmpProduto.toString() + "\n\n")){
                                 eletronico = (Eletronicos) tmpProduto;
 
@@ -223,37 +184,24 @@ public class Loja {
                                 break;
                             }
                         } else {
-                        	JOptionPane.showMessageDialog(null, "Código de produto já está em uso por produto de outro tipo! Insira outro código.", empresa.getNomeEmpresa(), 
-                              		JOptionPane.ERROR_MESSAGE);
+                            System.out.println("Código de produto já está em uso por produto de outro tipo! Insira outro código.");
                             break;
                         }
                     } else {
-                    	
-                    	nome = JOptionPane.showInputDialog(null, "Insira o nome do produto: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
-                       
-                       
+                        System.out.println("Insira o nome do produto:");
+                        nome = sc.nextLine();
 
-                    	descricao = JOptionPane.showInputDialog(null, "Insira a descrição: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
-                        
+                        System.out.println("Insira a descrição:");
+                        descricao = sc.nextLine();
 
-                    	marca = JOptionPane.showInputDialog(null, "Insira a marca: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
-                        
+                        System.out.println("Insira a marca:");
+                        marca = sc.nextLine();
 
-                    	cor = JOptionPane.showInputDialog(null, "Insira a cor: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
-                        
+                        System.out.println("Insira a cor:");
+                        cor = sc.nextLine();
 
-                    	categoria = JOptionPane.showInputDialog(null, "Insira a categoria: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
-                        
+                        System.out.println("Insira a categoria:");
+                        categoria = sc.nextLine();
 
                         valor = coletaDoubleComProtecao("Insira o valor (em R$):", 0, Double.MAX_VALUE);
 
@@ -268,16 +216,13 @@ public class Loja {
                     break;
 
                 case 2:
-                	String f;
-                	f = JOptionPane.showInputDialog(null, "Digite o código do produto: " , 
-                            empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                       		);
-                    codigo = Long.valueOf(f);
+                    System.out.println("Digite o código do produto:");
+                    codigo = sc.nextLong();
+                    sc.nextLine();
                     tmpProduto = empresa.retornaProdutoDoEstoqueComCodigo(codigo);
                     if (tmpProduto != null){
                         if (tmpProduto instanceof Eletrodomestico){
-                        	JOptionPane.showMessageDialog(null, "Código de produto já está em uso por produto da categoria de Eletrodoméstico.", empresa.getNomeEmpresa(), 
-                              		JOptionPane.WARNING_MESSAGE);
+                            System.out.println("Código de produto já está em uso por produto da categoria de Eletrodoméstico.");
                             if(fazPergunta("Deseja adicionar estoque ao produto?\n\n" + tmpProduto.toString() + "\n\n")){
                                 eletrodomestico = (Eletrodomestico) tmpProduto;
 
@@ -287,40 +232,27 @@ public class Loja {
                                 break;
                             }
                         } else {
-                        	JOptionPane.showMessageDialog(null, "Código de produto já está em uso por produto de outro tipo! Insira outro código.", empresa.getNomeEmpresa(), 
-                              		JOptionPane.ERROR_MESSAGE);
+                            System.out.println("Código de produto já está em uso por produto de outro tipo! Insira outro código.");
                             break;
                         }
                     } else {
-                    	nome = JOptionPane.showInputDialog(null, "Insira o nome do produto: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
-                       
-                       
+                        System.out.println("Insira o nome do produto:");
+                        nome = sc.nextLine();
 
-                    	descricao = JOptionPane.showInputDialog(null, "Insira a descrição: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
-                        
+                        System.out.println("Insira a descrição:");
+                        descricao = sc.nextLine();
 
-                    	marca = JOptionPane.showInputDialog(null, "Insira a marca: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
-                        
+                        System.out.println("Insira a marca:");
+                        marca = sc.nextLine();
 
-                    	cor = JOptionPane.showInputDialog(null, "Insira a cor: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
+                        System.out.println("Insira a cor:");
+                        cor = sc.nextLine();
 
+                        System.out.println("Insira a eficiência energética (A, B, C, ...):");
+                        eficienciaEnergetica = sc.nextLine();
 
-                    	eficienciaEnergetica = JOptionPane.showInputDialog(null, "Insira a eficiência energética (A, B, C, ...): " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
-                        
-
-                    	categoria = JOptionPane.showInputDialog(null, "Insira a categoria: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
+                        System.out.println("Insira a categoria:");
+                        categoria = sc.nextLine();
 
                         valor = coletaDoubleComProtecao("Insira o valor (em R$):", 0, Double.MAX_VALUE);
 
@@ -333,16 +265,13 @@ public class Loja {
                     break;
 
                 case 3:
-                	String g;
-                	g = JOptionPane.showInputDialog(null, "Digite o código do produto: " , 
-                            empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                       		);
-                    codigo = Long.valueOf(g);
+                    System.out.println("Digite o código do produto:");
+                    codigo = sc.nextLong();
+                    sc.nextLine();
                     tmpProduto = empresa.retornaProdutoDoEstoqueComCodigo(codigo);
                     if (tmpProduto != null){
                         if (tmpProduto instanceof Livros){
-                        	JOptionPane.showMessageDialog(null, "Código de produto já está em uso por produto da categoria de Livro.", empresa.getNomeEmpresa(), 
-                              		JOptionPane.WARNING_MESSAGE);
+                            System.out.println("Código de produto já está em uso por produto da categoria de Livro.");
                             if(fazPergunta("Deseja adicionar estoque ao produto?\n\n" + tmpProduto.toString() + "\n\n")){
                                 livro = (Livros) tmpProduto;
 
@@ -352,41 +281,30 @@ public class Loja {
                                 break;
                             }
                         } else {
-                        	JOptionPane.showMessageDialog(null, "Código de produto já está em uso por produto de outro tipo! Insira outro código.", empresa.getNomeEmpresa(), 
-                              		JOptionPane.ERROR_MESSAGE);
+                            System.out.println("Código de produto já está em uso por produto de outro tipo! Insira outro código.");
                             break;
                         }
                     } else {
-                    	nome = JOptionPane.showInputDialog(null, "Insira o nome do produto: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
+                        System.out.println("Insira o nome do produto:");
+                        nome = sc.nextLine();
 
-                    	descricao = JOptionPane.showInputDialog(null, "Insira a descrição: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
+                        System.out.println("Insira a descrição:");
+                        descricao = sc.nextLine();
 
                         valor = coletaDoubleComProtecao("Insira o valor (em R$):", 0, Double.MAX_VALUE);
                         quantidade = coletaInteiroComProtecao("Insira a quantidade a ser adicionada no estoque (0 - 9999)", 0, 9999);
 
-                        autor = JOptionPane.showInputDialog(null, "Insira o(a) autor(a): " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
-                      
+                        System.out.println("Insira o(a) autor(a):");
+                        autor = sc.nextLine();
 
-                        editora = JOptionPane.showInputDialog(null, "Insira a editora: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
-                       
+                        System.out.println("Insira a editora:");
+                        editora = sc.nextLine();
 
-                        genero = JOptionPane.showInputDialog(null, "Insira o gênero: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
-                        
+                        System.out.println("Insira o gênero:");
+                        genero = sc.nextLine();
 
-                        formato = JOptionPane.showInputDialog(null, "Insira o formato (físico, digital): " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
-                       
+                        System.out.println("Insira o formato (físico, digital):");
+                        formato = sc.nextLine();
 
                         //anoDeLancamento = coletaInteiroComProtecao("Insira o ano de lançamento (1800 - 2024)", 1800, 2024);
 
@@ -397,16 +315,13 @@ public class Loja {
                     break;
 
                 case 4:
-                	String h;
-                	h = JOptionPane.showInputDialog(null, "Digite o código do produto: " , 
-                            empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                       		);
-                    codigo = Long.valueOf(h);
+                    System.out.println("Digite o código do produto:");
+                    codigo = sc.nextLong();
+                    sc.nextLine();
                     tmpProduto = empresa.retornaProdutoDoEstoqueComCodigo(codigo);
                     if (tmpProduto != null){
                         if (tmpProduto instanceof Roupas){
-                        	JOptionPane.showMessageDialog(null, "Código de produto já está em uso por produto da categoria de Roupa.", empresa.getNomeEmpresa(), 
-                              		JOptionPane.WARNING_MESSAGE);
+                            System.out.println("Código de produto já está em uso por produto da categoria de Livro.");
                             if(fazPergunta("Deseja adicionar estoque ao produto?\n\n" + tmpProduto.toString() + "\n\n")){
                                 roupa = (Roupas) tmpProduto;
 
@@ -416,45 +331,30 @@ public class Loja {
                                 break;
                             }
                         } else {
-                        	JOptionPane.showMessageDialog(null, "Código de produto já está em uso por produto de outro tipo! Insira outro código.", empresa.getNomeEmpresa(), 
-                              		JOptionPane.ERROR_MESSAGE);
+                            System.out.println("Código de produto já está em uso por produto de outro tipo! Insira outro código.");
                             break;
                         }
                     } else {
-                    	nome = JOptionPane.showInputDialog(null, "Insira o nome do produto: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
-                       
-                       
+                        System.out.println("Insira o nome do produto:");
+                        nome = sc.nextLine();
 
-                    	descricao = JOptionPane.showInputDialog(null, "Insira a descrição: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
-                        
+                        System.out.println("Insira a descrição:");
+                        descricao = sc.nextLine();
 
-                    	marca = JOptionPane.showInputDialog(null, "Insira a marca: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
-                        
+                        System.out.println("Insira a marca:");
+                        marca = sc.nextLine();
 
-                    	cor = JOptionPane.showInputDialog(null, "Insira a cor: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
+                        System.out.println("Insira a cor:");
+                        cor = sc.nextLine();
 
-                    	categoria = JOptionPane.showInputDialog(null, "Insira a categoria: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
-                    	
-                    	tamanho = JOptionPane.showInputDialog(null, "Insira o tamanho: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
+                        System.out.println("Insira a categoria:");
+                        categoria = sc.nextLine();
 
-                       
+                        System.out.println("Insira o tamanho:");
+                        tamanho = sc.nextLine();
 
-                    	tecido = JOptionPane.showInputDialog(null, "Insira o tecido: " , 
-                                empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                           		);
-                       
+                        System.out.println("Insira o tecido:");
+                        tecido = sc.nextLine();
 
                         valor = coletaDoubleComProtecao("Insira o valor (em R$):", 0, Double.MAX_VALUE);
                         quantidade = coletaInteiroComProtecao("Insira a quantidade a ser adicionada no estoque (0 - 9999)", 0, 9999);
@@ -466,8 +366,7 @@ public class Loja {
                     break;
 
                 default:
-                	JOptionPane.showMessageDialog(null, "Opção inválida!", empresa.getNomeEmpresa(), 
-                      		JOptionPane.ERROR_MESSAGE);
+                    System.out.println("Opção inválida!");
             }
 
         } while (opcoes != 0);
@@ -477,19 +376,14 @@ public class Loja {
     //Faz uma pergunta ao usuário, e retorna true se a resposta for verdadeira, e false se for falsa
     public static boolean fazPergunta(String pergunta){
         String resposta;
-        String d;
 
         do {
-        	d = JOptionPane.showInputDialog(null, pergunta + "\nDigite S para Sim, ou N para não" , 
-                    empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-               		);
-            
+            System.out.println(pergunta);
+            System.out.println("Digite S para Sim, ou N para não");
             try{
-                resposta = String.valueOf(d);
+                resposta = sc.nextLine();
             } catch (Exception e){
-            	JOptionPane.showMessageDialog(null, "Por favor, insira uma resposta válida!", empresa.getNomeEmpresa(), 
-                 		JOptionPane.ERROR_MESSAGE);
-                
+                System.out.println("Por favor, insira uma resposta válida!");
                 resposta = "";
             }
 
@@ -501,19 +395,15 @@ public class Loja {
 
     public static double coletaDoubleComProtecao(String pergunta, double valorMinimo, double valorMaximo){
         double tmpOpcao;
-        String c;
 
         do {
-        	c = JOptionPane.showInputDialog(null, pergunta, 
-                    empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-               		);
+            System.out.println(pergunta);
             try{
-                tmpOpcao = Double.valueOf(c);
-                
+                tmpOpcao = sc.nextDouble();
+                sc.nextLine();
             } catch (Exception e){
-            	 JOptionPane.showMessageDialog(null, "Por favor, insira um valor válido!", empresa.getNomeEmpresa(), 
-                 		JOptionPane.ERROR_MESSAGE);
-                
+                System.out.println("Por favor, insira um valor válido!");
+                sc.nextLine();
                 tmpOpcao = valorMinimo-1;
             }
 
@@ -524,19 +414,15 @@ public class Loja {
 
     public static int coletaInteiroComProtecao(String pergunta, int valorMinimo, int valorMaximo){
         int tmpOpcao;
-        String b;
 
         do {
-           b =  JOptionPane.showInputDialog(null, pergunta, 
-                   empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-           		);
+            System.out.println(pergunta);
             try{
-                tmpOpcao = Integer.valueOf(b);
-                
+                tmpOpcao = sc.nextInt();
+                sc.nextLine();
             } catch (Exception e){
-            	JOptionPane.showMessageDialog(null, "Por favor, insira um valor válido!", empresa.getNomeEmpresa(), 
-                  		JOptionPane.ERROR_MESSAGE);
-                
+                System.out.println("Por favor, insira um valor válido!");
+                sc.nextLine();
                 tmpOpcao = valorMinimo-1;
             }
 
@@ -547,28 +433,17 @@ public class Loja {
 
     public static int coletaRetornoUsuario(String pergunta, String valorRetorno, int itens){
         int tmpOpcao;
-        String a;
-        
 
         do {
-        	if ((valorRetorno.equals("")) == false) {
-            
-        		a = JOptionPane.showInputDialog(null,  "Escolha uma das opções:\n" +
-                        valorRetorno + "\n " + pergunta , 
-                        empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-                		);
-           } else {
-        	   a = JOptionPane.showInputDialog(null,  pergunta + valorRetorno , 
-                       empresa.getNomeEmpresa(), JOptionPane.QUESTION_MESSAGE 
-               		);
-        	   }
+            System.out.println("Escolha uma das opções:\n" +
+                    valorRetorno);
+            System.out.println(pergunta);
             try{
-                tmpOpcao = Integer.valueOf(a);
-               
+                tmpOpcao = sc.nextInt();
+                sc.nextLine();
             } catch (Exception e){
-            	 JOptionPane.showMessageDialog(null, "Por favor, insira um valor válido!", empresa.getNomeEmpresa(), 
-                  		JOptionPane.ERROR_MESSAGE);
-                
+                System.out.println("Por favor, insira um valor válido!");
+                sc.nextLine();
                 tmpOpcao = -1;
             }
 
