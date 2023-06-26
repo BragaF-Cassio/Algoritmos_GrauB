@@ -141,11 +141,18 @@ public class Empresa implements Serializable {
         if(!carrinho.isEmpty()) {
             System.out.println("Carrinho do cliente:");
             //System.out.println(carrinho);
-            for (Item p: carrinho){
-                System.out.println(p.toString());
-            }
-            System.out.println();
-            return carrinho.toString();
+            int quant = 1;
+            String tmpRet = "";
+            if (carrinho != null) {
+            	for (Item p : carrinho) {
+                    tmpRet += String.format("%d) ", quant) + p.toString() + "\n";
+                    quant++;
+                }
+            }	
+            
+            
+            
+            return tmpRet;
         } else {
             System.out.println("Carrinho vazio!");
             System.out.println();
