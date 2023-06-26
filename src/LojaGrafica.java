@@ -178,7 +178,7 @@ public class LojaGrafica {
 
             if(opcoes == 5){
                 if(tmpCarrinho != null) {
-                    indiceProduto = coletaRetornoUsuario("Digite o numero de uma das opções anteriores, ou 0 para Cancelar:", "", tmpCarrinho.size());
+                    indiceProduto = coletaRetornoUsuario(showInfo + "Digite o numero de uma das opções anteriores, ou 0 para Cancelar:", "", tmpCarrinho.size());
                     indiceProduto--;
                     if (indiceProduto >= 0) {
                         quantidade = coletaInteiroComProtecao("Insira a quantidade do produto que se deseja remover do carrinho (0 - " +
