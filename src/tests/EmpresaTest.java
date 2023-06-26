@@ -99,7 +99,8 @@ public class EmpresaTest {
         empresa.addProdutoEstoque(livro, 5, true);
         empresa.addProdutoCarrinho(livro, 3);
         String resultado = empresa.visualizarCarrinho();
-        String resultadoEsperado = "[Item{produto={Nome='Código limpo: Habilidades práticas do Agile', Valor=89.99, Autor: Robert C. Martin, Editora= Alta Books, Gênero= Educação, Formato= Livro Físico - Capa Dura, Descricao='Código limpo: Habilidades práticas do Agile', Quantidade=5}, quantidade=3}]";
+        String resultadoEsperado = "1) Item{produto={Nome='Código limpo: Habilidades práticas do Agile', Valor=89.99, Autor: Robert C. Martin, Editora= Alta Books, Gênero= Educação, Formato= Livro Físico - Capa Dura, Descricao='Código limpo: Habilidades práticas do Agile', Quantidade=5}, quantidade=3}\n"
+        		;
         Assert.assertEquals(resultadoEsperado, resultado);
     }
 
@@ -137,8 +138,9 @@ public class EmpresaTest {
         empresa.addProdutoCarrinho(livro, 3);
         empresa.addProdutoCarrinho(livro, 3);
         String resultado = empresa.visualizarCarrinho();
-        String resultadoEsperado = "[Item{produto={Nome='Código limpo: Habilidades práticas do Agile', Valor=89.99, Autor: Robert C. Martin, Editora= Alta Books, Gênero= Educação, Formato= Livro Físico - Capa Dura, Descricao='Código limpo: Habilidades práticas do Agile', Quantidade=5}, quantidade=3}]";
-        Assert.assertEquals(resultadoEsperado, resultado.toString());
+        String resultadoEsperado = "1) Item{produto={Nome='Código limpo: Habilidades práticas do Agile', Valor=89.99, Autor: Robert C. Martin, Editora= Alta Books, Gênero= Educação, Formato= Livro Físico - Capa Dura, Descricao='Código limpo: Habilidades práticas do Agile', Quantidade=5}, quantidade=3}\n"
+        		+ "";
+        Assert.assertEquals(resultadoEsperado, resultado);
     }
 
     //testes do método removeProdutoCarrinho
@@ -165,7 +167,8 @@ public class EmpresaTest {
         empresa.addProdutoCarrinho(camisetaPolo, 3);
         empresa.removeProdutoCarrinho(camisetaPolo, 1);
         String resultado = empresa.visualizarCarrinho();
-        String resultadoEsperado = "[Item{produto={Nome='Camiseta Polo', Valor=99.99, Tamanho='M', Tecido='Algodão', Descricao='Camiseta Polo Listrada', Marca='Polo', Cor='Cinza e preto', Categoria='Camisetas', Quantidade=5, Codigo=999}, quantidade=2}]";
+        String resultadoEsperado = "1) Item{produto={Nome='Camiseta Polo', Valor=99.99, Tamanho='M', Tecido='Algodão', Descricao='Camiseta Polo Listrada', Marca='Polo', Cor='Cinza e preto', Categoria='Camisetas', Quantidade=5, Codigo=999}, quantidade=2}\n"
+        		;
         Assert.assertEquals(resultadoEsperado, resultado);
     }
 
@@ -265,12 +268,8 @@ public class EmpresaTest {
         empresa.addProdutoCarrinho(camisetaPolo, 3);
         empresa.addProdutoCarrinho(geladeira, 1);
         String resultado = empresa.toString();
-        String resultadoEsperado = "Empresa{" +
-                "nomeEmpresa='" + empresa.getNomeEmpresa() + '\'' +
-                ", carrinho=" + empresa.visualizarCarrinho() +
-                ", estoque=" + empresa.visualizarEstoque() +
-                '}';
-        Assert.assertEquals(resultado, resultadoEsperado);
+        String resultadoEsperado = "Empresa{nomeEmpresa='Amazon', carrinho=[Item{produto={Nome='Camiseta Polo', Valor=100.0, Tamanho='M', Tecido='Algodão', Descricao='Camiseta Polo Listrada', Marca='Polo', Cor='Cinza e preto', Categoria='Camisetas', Quantidade=5, Codigo=999}, quantidade=3}, Item{produto={Nome='Geladeira', Valor=1800.0, Descrição='Geladeira Moderna', Eficiência Energética=56kWh/mes, Marca='Brastemp', Cor='Preta', Categoria='Eletrodomestico', Quantidade=4, Código=29283}, quantidade=1}], estoque=[{Nome='Camiseta Polo', Valor=100.0, Tamanho='M', Tecido='Algodão', Descricao='Camiseta Polo Listrada', Marca='Polo', Cor='Cinza e preto', Categoria='Camisetas', Quantidade=5, Codigo=999}, {Nome='Geladeira', Valor=1800.0, Descrição='Geladeira Moderna', Eficiência Energética=56kWh/mes, Marca='Brastemp', Cor='Preta', Categoria='Eletrodomestico', Quantidade=4, Código=29283}]}";
+        Assert.assertEquals(resultadoEsperado, resultado);
     }
 
     @Test
@@ -295,7 +294,9 @@ public class EmpresaTest {
         empresa.addProdutoCarrinho(camisetaPolo, 3);
         empresa.addProdutoCarrinho(geladeira, 1);
         String resultado = empresa.visualizarCarrinho();
-        String resultadoEsperado = "[Item{produto={Nome='Camiseta Polo', Valor=100.0, Tamanho='M', Tecido='Algodão', Descricao='Camiseta Polo Listrada', Marca='Polo', Cor='Cinza e preto', Categoria='Camisetas', Quantidade=5, Codigo=999}, quantidade=3}, Item{produto={Nome='Geladeira', Valor=1800.0, Descrição='Geladeira Moderna', Eficiência Energética=56kWh/mes, Marca='Brastemp', Cor='Preta', Categoria='Eletrodomestico', Quantidade=4, Código=29283}, quantidade=1}]";
+        String resultadoEsperado = "1) Item{produto={Nome='Camiseta Polo', Valor=100.0, Tamanho='M', Tecido='Algodão', Descricao='Camiseta Polo Listrada', Marca='Polo', Cor='Cinza e preto', Categoria='Camisetas', Quantidade=5, Codigo=999}, quantidade=3}\n"
+        		+ "2) Item{produto={Nome='Geladeira', Valor=1800.0, Descrição='Geladeira Moderna', Eficiência Energética=56kWh/mes, Marca='Brastemp', Cor='Preta', Categoria='Eletrodomestico', Quantidade=4, Código=29283}, quantidade=1}\n"
+        		;
         Assert.assertEquals(resultadoEsperado, resultado);
     }
 
