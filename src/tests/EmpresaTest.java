@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
+
 public class EmpresaTest {
     //testes do método addProdutoEstoque
     @Test
@@ -15,9 +16,11 @@ public class EmpresaTest {
         Empresa empresa = new Empresa("Amazon");
         Produto mouse = new Eletronicos("Mouse gamer", "Mouse para jogos", "Corsair", "Cinza", "Gamer", 49.99,2, 123,  2020);
         empresa.addProdutoEstoque(mouse, 3, true);
-        String resultadoEsperado = "[Eletronicos{anoDeLancamento=2020, nome='Mouse gamer', descricao='Mouse para jogos', marca='Corsair', cor='Cinza', categoria='Gamer', valor=49.99, quantidade=3}]";
+        String resultadoEsperado = "[{Nome='Mouse gamer', Valor=49.99, Descrição='Mouse para jogos', Ano De Lancamento=2020, Marca='Corsair', Cor='Cinza', Categoria='Gamer', Quantidade=3}]";
+        
+        
         ArrayList<Produto> resultado = empresa.visualizarEstoque();
-        Assert.assertEquals(resultadoEsperado, resultado);
+        Assert.assertEquals(resultadoEsperado, resultado.toString());
     }
 
     @Test
@@ -28,8 +31,10 @@ public class EmpresaTest {
         empresa.addProdutoEstoque(mouse, 3, true);
         empresa.addProdutoEstoque(mouse, 1, true);
         ArrayList<Produto> resultado = empresa.visualizarEstoque();
-        String resultadoEsperado = "[Eletronicos{anoDeLancamento=2020, nome='Mouse gamer', descricao='Mouse para jogos', marca='Corsair', cor='Cinza', categoria='Gamer', valor=49.99, quantidade=4}]";
-        Assert.assertEquals(resultadoEsperado, resultado);
+        
+        
+        String resultadoEsperado = "[{Nome='Mouse gamer', Valor=49.99, Descrição='Mouse para jogos', Ano De Lancamento=2020, Marca='Corsair', Cor='Cinza', Categoria='Gamer', Quantidade=4}]";
+        Assert.assertEquals(resultadoEsperado, resultado.toString());
     }
 
     @Test
@@ -41,7 +46,7 @@ public class EmpresaTest {
         Produto mouse = new Eletronicos("Mouse gamer", "Mouse para jogos", "Corsair", "Cinza", "Gamer", 49.99,2, 123,  2020);
         empresa.addProdutoEstoque(mouse, 1, false);
         ArrayList<Produto> resultado = empresa.visualizarEstoque();
-        String resultadoEsperado = "Vazio";
+        String resultadoEsperado = null;
         Assert.assertEquals(resultadoEsperado, resultado);
     }
 
@@ -55,8 +60,8 @@ public class EmpresaTest {
         empresa.addProdutoEstoque(carregadorIphone, 4, true);
         empresa.removerProdutoEstoque(carregadorIphone, 1);
         ArrayList<Produto> resultado = empresa.visualizarEstoque();
-        String resultadoEsperado = "[Eletronicos{anoDeLancamento=2022, nome='Carregador de Iphone', descricao='Carregador homologado Apple', marca='Apple', cor='Branco', categoria='Carregador', valor=89.99, quantidade=3}]";
-        Assert.assertEquals(resultadoEsperado, resultado);
+        String resultadoEsperado = "[{Nome='Carregador de Iphone', Valor=89.99, Descrição='Carregador homologado Apple', Ano De Lancamento=2022, Marca='Apple', Cor='Branco', Categoria='Carregador', Quantidade=3}]";
+        Assert.assertEquals(resultadoEsperado, resultado.toString());
     }
 
     @Test
@@ -68,7 +73,7 @@ public class EmpresaTest {
         Produto carregadorIphone = new Eletronicos("Carregador de Iphone", "Carregador homologado Apple", "Apple", "Branco", "Carregador", 89.99, 0, 456,  2022);
         empresa.removerProdutoEstoque(carregadorIphone, 1);
         ArrayList<Produto> resultado = empresa.visualizarEstoque();
-        String resultadoEsperado = "Vazio";
+        String resultadoEsperado = null;
         Assert.assertEquals(resultadoEsperado, resultado);
     }
 
@@ -81,7 +86,7 @@ public class EmpresaTest {
         empresa.addProdutoEstoque(carregadorIphone, 2, true);
         empresa.removerProdutoEstoque(carregadorIphone, 3);
         ArrayList<Produto> resultado = empresa.visualizarEstoque();
-        String resultadoEsperado = "Vazio";
+        String resultadoEsperado = null;
         Assert.assertEquals(resultadoEsperado, resultado);
     }
 
@@ -95,7 +100,7 @@ public class EmpresaTest {
         empresa.addProdutoEstoque(livro, 5, true);
         empresa.addProdutoCarrinho(livro, 3);
         String resultado = empresa.visualizarCarrinho();
-        String resultadoEsperado = "[Item{produto=Livros{Autor: Robert C. Martineditora= Alta Booksgenero= Educaçãoformato= Livro Físico - Capa Dura, nome='Código limpo: Habilidades práticas do Agile', descricao='Código limpo: Habilidades práticas do Agile', valor=89.99, quantidade=5}, quantidade=3}]";
+        String resultadoEsperado = "[Item{produto={Nome='Código limpo: Habilidades práticas do Agile', Valor=89.99, Autor: Robert C. Martin, Editora= Alta Books, Gênero= Educação, Formato= Livro Físico - Capa Dura, Descricao='Código limpo: Habilidades práticas do Agile', Quantidade=5}, quantidade=3}]";
         Assert.assertEquals(resultadoEsperado, resultado);
     }
 
@@ -136,8 +141,8 @@ public class EmpresaTest {
         empresa.addProdutoCarrinho(livro, 3);
         empresa.addProdutoCarrinho(livro, 3);
         String resultado = empresa.visualizarCarrinho();
-        String resultadoEsperado = "[Item{produto=Livros{Autor: Robert C. Martineditora= Alta Booksgenero= Educaçãoformato= Livro Físico - Capa Dura, nome='Código limpo: Habilidades práticas do Agile', descricao='Código limpo: Habilidades práticas do Agile', valor=89.99, quantidade=5}, quantidade=3}]";
-        Assert.assertEquals(resultadoEsperado, resultado);
+        String resultadoEsperado = "[Item{produto={Nome='Código limpo: Habilidades práticas do Agile', Valor=89.99, Autor: Robert C. Martin, Editora= Alta Books, Gênero= Educação, Formato= Livro Físico - Capa Dura, Descricao='Código limpo: Habilidades práticas do Agile', Quantidade=5}, quantidade=3}]";
+        Assert.assertEquals(resultadoEsperado, resultado.toString());
     }
 
     //testes do método removeProdutoCarrinho
@@ -166,7 +171,7 @@ public class EmpresaTest {
         empresa.addProdutoCarrinho(camisetaPolo, 3);
         empresa.removeProdutoCarrinho(camisetaPolo, 1);
         String resultado = empresa.visualizarCarrinho();
-        String resultadoEsperado = "[Item{produto=Roupas{tamanho='M', tecido='Algodão', nome='Camiseta Polo', descricao='Camiseta Polo Listrada', marca='Polo', cor='Cinza e preto', categoria='Camisetas', valor=99.99, quantidade=5, codigo=999}, quantidade=2}]";
+        String resultadoEsperado = "[Item{produto={Nome='Camiseta Polo', Valor=99.99, Tamanho='M', Tecido='Algodão', Descricao='Camiseta Polo Listrada', Marca='Polo', Cor='Cinza e preto', Categoria='Camisetas', Quantidade=5, Codigo=999}, quantidade=2}]";
         Assert.assertEquals(resultadoEsperado, resultado);
     }
 
