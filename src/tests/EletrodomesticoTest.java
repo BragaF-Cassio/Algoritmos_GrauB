@@ -14,16 +14,15 @@ class EletrodomesticoTest {
 
 		Eletrodomestico a = new Eletrodomestico("Ventilador", "Ventilador com Repelente", 
 				"Phillips", "Preto", "Ventiladores", 20.99, 3, "Grau B", 312331); 
-        String esperado = "Eletrodomestico:" + 
-				" Eficiencia Energetica=" + "Grau B" +
-				", nome='" + "Ventilador" + '\'' +
-                ", descricao='" + "Ventilador com Repelente" + '\'' +
-                ", marca='" + "Phillips" + '\'' +
-                ", cor='" + "Preto" + '\'' +
-                ", categoria='" + "Ventiladores" + '\'' +
-                ", valor=" + 20.99 +
-                ", quantidade=" + 3 +
-                ",  codigo=" + 312331 +
+        String esperado = "{Nome='" + "Ventilador" + '\'' +
+                ", Valor=" + 20.99 +
+                ", Descrição='" + "Ventilador com Repelente" + '\'' +
+                ", Eficiência Energética=" + "Grau B" +
+                ", Marca='" + "Phillips" + '\'' +
+                ", Cor='" + "Preto" + '\'' +
+                ", Categoria='" + "Ventiladores" + '\'' +
+                ", Quantidade=" + 3 +
+                ", Código=" + 312331 +
                 '}';
         assertEquals(esperado, a.toString());
         assertEquals(true,(esperado instanceof String) ); //Testar se o valor esperado é uma string .

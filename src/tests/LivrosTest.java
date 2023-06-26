@@ -12,15 +12,14 @@ class LivrosTest {
 
 				Livros a = new Livros("A Volta ao Mundo em 80 dias", "O livro é sobre um homem que percorre o mundo em 80 dias", 
 						9.99 , 3, 121323,   "Julio Verne", "Penguin Books", "Aventura", "Livro Fisico"); 
-		        String esperado = "Livros{" +
-		                "Autor: " + "Julio Verne" +
-		                "editora= " + "Penguin Books" +
-		                "genero= " + "Aventura" +
-		                "formato= " + "Livro Fisico" +
-		                ", nome='" + "A Volta ao Mundo em 80 dias" + '\'' +
-		                ", descricao='" + "O livro é sobre um homem que percorre o mundo em 80 dias" + '\'' +
-		                ", valor=" + 9.99 +
-		                ", quantidade=" +  3 +
+		        String esperado = "{Nome='" + "A Volta ao Mundo em 80 dias" + '\'' +
+		                ", Valor=" + 9.99 +
+		                ", Autor: " + "Julio Verne" +
+		                ", Editora= " + "Penguin Books" +
+		                ", Gênero= " + "Aventura" +
+		                ", Formato= " + "Livro Fisico" +
+		                ", Descricao='" + "O livro é sobre um homem que percorre o mundo em 80 dias" + '\'' +
+		                ", Quantidade=" + 3 +
 		                '}';
 		        assertEquals(esperado, a.toString());
 		        assertEquals(true,(esperado instanceof String) ); //Testar se o valor esperado é uma string .

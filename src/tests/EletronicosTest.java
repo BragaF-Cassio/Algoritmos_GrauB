@@ -17,16 +17,16 @@ class EletronicosTest {
 
 		Eletronicos a = new Eletronicos("Capacitor 20A", "Capacitor com 20A", 
 				"Ht Micron", "Azul", "Capacitores", 9.99, 3, 312331, 2009); 
-        String esperado = "Eletronicos{" +
-                "anoDeLancamento=" + 2009 +
-                ", nome='" + "Capacitor 20A" + '\'' +
-                ", descricao='" + "Capacitor com 20A" + '\'' +
-                ", marca='" + "Ht Micron" + '\'' +
-                ", cor='" + "Azul" + '\'' +
-                ", categoria='" + "Capacitores" + '\'' +
-                ", valor=" + 9.99 +
-                ", quantidade=" + 3 +
+        String esperado = "{Nome='" + "Capacitor 20A" + '\'' +
+                ", Valor=" + 9.99 +
+                ", Descrição='" + "Capacitor com 20A" + '\'' +
+                ", Ano De Lancamento=" + 2009 +
+                ", Marca='" + "Ht Micron" + '\'' +
+                ", Cor='" + "Azul" + '\'' +
+                ", Categoria='" + "Capacitores" + '\'' +
+                ", Quantidade=" + 3 +
                 '}';
+        
         assertEquals(esperado, a.toString());
         assertEquals(true,(esperado instanceof String) ); //Testar se o valor esperado é uma string .
         

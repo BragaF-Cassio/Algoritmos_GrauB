@@ -13,17 +13,16 @@ class RoupasTest {
 
 		Roupas a = new Roupas("Camisa Polo", "Camisa com gola", 
 				"Polo", "Azul", "Camisa", 29.99, 3, 312331, "M", "Algodao"); 
-        String esperado = "Roupas{" +
-                "tamanho='" + "M" + '\'' +
-                ", tecido='" + "Algodao" + '\'' +
-                ", nome='" + "Camisa Polo" + '\'' +
-                ", descricao='" + "Camisa com gola" + '\'' +
-                ", marca='" + "Polo" + '\'' +
-                ", cor='" + "Azul" + '\'' +
-                ", categoria='" + "Camisa" + '\'' +
-                ", valor=" + 29.99 +
-                ", quantidade=" + 3 +
-                ", codigo=" + 312331 +
+        String esperado = "{Nome='" + "Camisa Polo" + '\'' +
+                ", Valor=" + 29.99 +
+                ", Tamanho='" + "M" + '\'' +
+                ", Tecido='" + "Algodao" + '\'' +
+                ", Descricao='" + "Camisa com gola" + '\'' +
+                ", Marca='" + "Polo" + '\'' +
+                ", Cor='" + "Azul" + '\'' +
+                ", Categoria='" + "Camisa" + '\'' +
+                ", Quantidade=" + 3 +
+                ", Codigo=" + 312331 +
                 '}';
         assertEquals(esperado, a.toString());
         assertEquals(true,(esperado instanceof String) ); //Testar se o valor esperado é uma string .
